@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fastfetch-config Wiki</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2358a6ff' d='M55 5L45 5 43 17C39 18 35 20 32 22L21 16 16 24 25 31C23 35 22 39 22 44L11 47 11 57 22 60C23 64 25 68 27 71L18 80 24 87 33 79C37 81 41 83 45 84L47 96 57 96 59 84C63 83 67 81 71 79L80 87 86 80 77 71C79 67 81 63 82 59L94 57 94 47 82 44C81 40 79 36 77 32L86 24 80 17 71 25C67 23 63 21 59 20L57 8 55 5ZM50 30A20 20 0 1 1 50 70 20 20 0 1 1 50 30Z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="container">
+    <aside id="sidebar">
+      <div id="sidebar-header">
+        <h1><a href="#" id="home-link">fastfetch-config</a></h1>
+        <p class="subtitle">Wiki · V1.6.7</p>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" data-page="home">Home</a></li>
+          <li><a href="#" data-page="installation">Installation</a></li>
+          <li><a href="#" data-page="commands">Commands</a></li>
+          <li><a href="#" data-page="tui">TUI Menu</a></li>
+          <li><a href="#" data-page="modules">Modules</a></li>
+          <li><a href="#" data-page="logo">Logo</a></li>
+          <li><a href="#" data-page="chafa">Chafa</a></li>
+          <li><a href="#" data-page="osname">OS Name</a></li>
+          <li><a href="#" data-page="colors">Colors</a></li>
+          <li><a href="#" data-page="backup">Backup &amp; Restore</a></li>
+          <li><a href="#" data-page="updating">Updating</a></li>
+          <li><a href="#" data-page="troubleshooting">Troubleshooting</a></li>
+          <li><a href="#" data-page="examples">Examples</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main id="content">
+      <section id="page-home" class="page active">
+        <h2>fastfetch-config</h2>
+        <p class="tagline">A CLI tool to manage your fastfetch configuration with ease.</p>
+        <p>This wiki reflects <strong>V1.6.7</strong>.</p>
+        <hr>
+        <h3>What is it?</h3>
+        <p><strong>fastfetch-config</strong> is a command-line utility that lets you manage every aspect of your fastfetch config — modules, logos, image rendering, OS names, colors, backups, and more — without editing JSON files by hand.</p>
+        <h3>Features</h3>
+        <ul>
+          <li>Add, remove, reorder, toggle, and configure <strong>modules</strong> (title, os, host, kernel, etc.)</li>
+          <li>Set <strong>logos</strong> from built-ins, local files, bundled ASCII art, or auto-detection</li>
+          <li>Browsable <strong>Logo Gallery</strong> with previews and one-key apply</li>
+          <li><strong>Chafa</strong> image rendering, auto-fitted to your terminal size</li>
+          <li>Spoof the displayed <strong>OS name</strong> — or pick a random one from 100+ distros</li>
+          <li>Configure <strong>logo colors</strong> by slot: 150+ named colors, raw hex, or ANSI codes</li>
+          <li>Full <strong>backup &amp; restore</strong> system with pruning (<code>clean</code>) and <code>diff</code> support</li>
+          <li><strong>Export / import</strong> configs as portable files</li>
+          <li><strong>Self-update</strong> directly from GitHub releases (stable or prerelease)</li>
+          <li><strong>Diagnostics</strong>: <code>doctor</code>, <code>diag</code>, and <code>search</code></li>
+          <li>Interactive <strong>TUI menu</strong> for point-and-shoot configuration</li>
+        </ul>
+        <h3>Quick Start</h3>
+        <pre><code>bash install-ff.sh
+ff tui</code></pre>
+      </section>
+
+      <section id="page-installation" class="page">
+        <h2>Installation</h2>
+        <h3>Prerequisites</h3>
+        <ul>
+          <li><strong>fastfetch</strong> — the system info tool (must be installed separately)</li>
+          <li><strong>jq</strong> — JSON processor (required; installed automatically if missing)</li>
+          <li><strong>chafa</strong> — terminal image rendering (installed automatically if missing)</li>
+          <li><strong>ImageMagick</strong> — installed automatically if missing</li>
+          <li><strong>bash</strong> &amp; standard Unix utilities</li>
+        </ul>
+        <h3>Installing</h3>
+        <p>Download <code>install-ff.sh</code> and run it:</p>
+        <pre><code>bash install-ff.sh</code></pre>
+        <p>The installer will:</p>
+        <ol>
+          <li>Detect your distro (via <code>/etc/os-release</code> or <code>lsb_release</code>)</li>
+          <li>Install missing dependencies with your package manager</li>
+          <li>Install the <code>fastfetch-config</code> script to <code>~/.local/bin/</code></li>
+          <li>Create the <code>ff</code> alias script</li>
+          <li>Set up a default config at <code>~/.config/fastfetch/config.jsonc</code></li>
+          <li>Install bundled ASCII art logos to <code>~/.config/fastfetch/logos/</code></li>
+          <li>Add <code>~/.local/bin</code> to your PATH (bash, zsh, or fish)</li>
+        </ol>
+        <h3>Supported Distros</h3>
+        <p>The dependency installer supports Arch-based (Arch, CachyOS, EndeavourOS, Garuda, Manjaro), Debian/Ubuntu-based (Ubuntu, Debian, Pop!_OS, Mint, elementary), Fedora/RHEL, openSUSE, Alpine, Void, and Gentoo. On unknown distros it prints a reminder to install <code>jq</code>, <code>chafa</code>, and <code>imagemagick</code> manually.</p>
+        <h3>Preserving Your Existing Config</h3>
+        <p>By default, the installer overwrites any existing config. To keep yours:</p>
+        <pre><code>bash install-ff.sh -nodelete</code></pre>
+        <h3>Sudo Password</h3>
+        <p>The installer prompts for sudo only when installing missing packages. The script itself runs without root.</p>
+        <h3>Updating</h3>
+        <p>The tool ships with a built-in updater that pulls the latest installer from GitHub releases:</p>
+        <pre><code>ff update                    # download and install latest stable
+ff update check              # check for stable updates only
+ff update -prerelease        # install latest, including prereleases
+ff update check -prerelease  # check for any updates, including prereleases</code></pre>
+        <p>A quiet background check runs at most once per day (when you launch the TUI or run <code>ff</code>); if a newer version exists it prints a one-line notice.</p>
+        <p>You can always reinstall manually by downloading and running <code>install-ff.sh</code> again, and <code>ff version</code> shows what you're currently on.</p>
+      </section>
+
+      <section id="page-commands" class="page">
+        <h2>Commands</h2>
+        <h3>General</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff</code></td><td>Run fastfetch with your config</td></tr>
+            <tr><td><code>ff status</code></td><td>Show current settings</td></tr>
+            <tr><td><code>ff stats|info</code></td><td>Show quick system info and config overview</td></tr>
+            <tr><td><code>ff tui</code></td><td>Open interactive TUI menu (aliases: <code>interactive</code>, <code>menu</code>)</td></tr>
+            <tr><td><code>ff gallery</code></td><td>Browse and preview built-in logos (aliases: <code>browse</code>, <code>logos</code>)</td></tr>
+            <tr><td><code>ff version</code></td><td>Show version</td></tr>
+            <tr><td><code>ff update [check]</code></td><td>Check for / install updates from GitHub</td></tr>
+            <tr><td><code>ff help</code></td><td>Show help (aliases: <code>--help</code>, <code>-h</code>)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Configuration</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff config-path</code></td><td>Show config file path</td></tr>
+            <tr><td><code>ff reset [name]</code></td><td>Reset entire config or one module</td></tr>
+            <tr><td><code>ff export [file]</code></td><td>Export config to a portable file</td></tr>
+            <tr><td><code>ff import &lt;file&gt;</code></td><td>Import config from a file (backs up first)</td></tr>
+            <tr><td><code>ff search &lt;term&gt;</code></td><td>Search modules and colors for a term</td></tr>
+            <tr><td><code>ff doctor</code></td><td>Check for common setup issues (alias: <code>check</code>)</td></tr>
+            <tr><td><code>ff diag</code></td><td>Show detailed environment diagnostics (alias: <code>diagnostics</code>)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Logo</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff logo</code></td><td>Show current logo</td></tr>
+            <tr><td><code>ff logo [name]</code></td><td>Set logo (built-in, bundled, file, or auto)</td></tr>
+            <tr><td><code>ff logo fit</code></td><td>Re-fit logo to terminal size</td></tr>
+            <tr><td><code>ff logo preview</code></td><td>Show logo details (aliases: <code>show</code>, <code>info</code>)</td></tr>
+            <tr><td><code>ff logo width [n]</code></td><td>Show/set logo width</td></tr>
+            <tr><td><code>ff logo height [n]</code></td><td>Show/set logo height</td></tr>
+            <tr><td><code>ff logo install</code></td><td>Install bundled ASCII art logos</td></tr>
+            <tr><td><code>ff list-logos</code></td><td>List available logos (aliases: <code>list</code>, <code>ls</code>)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Colors</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff color &lt;slot&gt; &lt;c&gt;</code></td><td>Set logo color slot (1–9)</td></tr>
+            <tr><td><code>ff color list</code></td><td>Show logo color overrides</td></tr>
+            <tr><td><code>ff color names</code></td><td>List all available color names</td></tr>
+            <tr><td><code>ff color search &lt;term&gt;</code></td><td>Search for a color name</td></tr>
+            <tr><td><code>ff color reset</code></td><td>Clear all color overrides</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Chafa (Images)</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff chafa</code></td><td>Show chafa status and usage</td></tr>
+            <tr><td><code>ff chafa on [file]</code></td><td>Enable chafa rendering (optionally with an image)</td></tr>
+            <tr><td><code>ff chafa raw [file]</code></td><td>Enable chafa raw mode (optionally with an image)</td></tr>
+            <tr><td><code>ff chafa fit</code></td><td>Re-fit chafa to terminal size (alias: <code>refit</code>)</td></tr>
+            <tr><td><code>ff chafa off</code></td><td>Disable chafa, revert to auto (aliases: <code>disable</code>, <code>auto</code>)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>OS Name</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff osname [name]</code></td><td>Show/set custom OS display name (alias: <code>os</code>)</td></tr>
+            <tr><td><code>ff osname auto</code></td><td>Restore auto-detection</td></tr>
+            <tr><td><code>ff osname random</code></td><td>Pick a random OS name (alias: <code>rand</code>)</td></tr>
+            <tr><td><code>ff osname-logo &lt;n&gt; [l]</code></td><td>Set OS name and logo at once</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Modules</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff module</code></td><td>List all modules (alias: <code>list</code>; command alias: <code>var</code>)</td></tr>
+            <tr><td><code>ff module add &lt;name&gt;</code></td><td>Add a module at its default position</td></tr>
+            <tr><td><code>ff module remove &lt;name&gt;</code></td><td>Remove a module (alias: <code>rm</code>)</td></tr>
+            <tr><td><code>ff module toggle &lt;name&gt;</code></td><td>Add if missing, remove if present</td></tr>
+            <tr><td><code>ff module move &lt;n&gt; &lt;p&gt;</code></td><td>Move module to position (aliases: <code>mv</code>, <code>reorder</code>)</td></tr>
+            <tr><td><code>ff module set &lt;n&gt; &lt;k&gt; &lt;v&gt;</code></td><td>Set a property on a module</td></tr>
+            <tr><td><code>ff module eset &lt;k&gt; &lt;f&gt;</code></td><td>Quick-set key and format in one go</td></tr>
+            <tr><td><code>ff module show &lt;n&gt;</code></td><td>Show module JSON (alias: <code>get</code>)</td></tr>
+            <tr><td><code>ff module reset all</code></td><td>Reset all modules to defaults</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Backups</h3>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff backup [name]</code></td><td>Save a config backup</td></tr>
+            <tr><td><code>ff backup list</code></td><td>List available backups (with dates)</td></tr>
+            <tr><td><code>ff backup rm &lt;name&gt;</code></td><td>Remove a backup (alias: <code>remove</code>)</td></tr>
+            <tr><td><code>ff restore &lt;name&gt;</code></td><td>Restore a backup (<code>restore list</code> lists them)</td></tr>
+            <tr><td><code>ff clean [days]</code></td><td>Remove backups older than N days (default: 30)</td></tr>
+            <tr><td><code>ff diff [backup]</code></td><td>Diff current config against a backup (defaults to newest)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="page-tui" class="page">
+        <h2>TUI Menu</h2>
+        <p>The TUI provides an interactive text-based interface for managing your fastfetch config. Launch it with:</p>
+        <pre><code>ff tui</code></pre>
+        <p>Aliases: <code>ff interactive</code>, <code>ff menu</code>. The header shows the installed version.</p>
+        <hr>
+        <h3>Main Menu</h3>
+        <table>
+          <thead>
+            <tr><th>Option</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1) Modules</td><td>Manage modules — add, remove, reorder, configure</td></tr>
+            <tr><td>2) Logo</td><td>Set the display logo</td></tr>
+            <tr><td>3) OS Name</td><td>Set the displayed OS name</td></tr>
+            <tr><td>4) Colors</td><td>Set logo color overrides</td></tr>
+            <tr><td>5) Status</td><td>View current configuration</td></tr>
+            <tr><td>6) Chafa</td><td>Toggle image rendering modes</td></tr>
+            <tr><td>7) Reset</td><td>Reset config or individual modules</td></tr>
+            <tr><td>8) Update</td><td>Self-update from GitHub</td></tr>
+            <tr><td>9) Backup / Restore</td><td>Create, list, restore, or remove backups</td></tr>
+            <tr><td>L) Logo Gallery</td><td>Browse and apply built-in logos</td></tr>
+            <tr><td>A) Help</td><td>View command reference</td></tr>
+            <tr><td>0) Exit</td><td>Exit the TUI and run fastfetch</td></tr>
+            <tr><td>F) Pay Respects</td><td>F's in the chat</td></tr>
+          </tbody>
+        </table>
+        <p>All menus accept single-key input (no Enter needed): <code>c</code> jumps to Chafa, <code>u</code> to Update, <code>b</code> to Backup / Restore, <code>l</code> to the Gallery, <code>a</code> to Help, <code>f</code> pays respects, and <code>q</code>/<code>back</code> goes back.</p>
+        <h3>Modules Submenu</h3>
+        <p>The modules submenu shows the current module list at the top and offers:</p>
+        <ul>
+          <li><strong>Add</strong> — insert a module at its default position</li>
+          <li><strong>Remove</strong> — delete a module by name</li>
+          <li><strong>Move</strong> — reorder a module to a new position</li>
+          <li><strong>Set property</strong> — add or change a key/value on a module</li>
+          <li><strong>Easy set</strong> — set both the display label (key) and format in one step</li>
+        </ul>
+        <h3>Chafa Submenu</h3>
+        <ul>
+          <li><strong>Enable chafa</strong> / <strong>Enable chafa (raw mode)</strong></li>
+          <li><strong>Enable with image</strong> (normal or raw) — prompts for an image path</li>
+          <li><strong>Disable chafa</strong> — reverts to auto logo detection</li>
+          <li><strong>Re-fit to terminal</strong> — recalculates dimensions</li>
+        </ul>
+        <h3>Backup Submenu</h3>
+        <ul>
+          <li><strong>Create backup</strong> — optional custom name, timestamp fallback</li>
+          <li><strong>List backups</strong></li>
+          <li><strong>Restore backup</strong></li>
+          <li><strong>Remove backup</strong></li>
+        </ul>
+        <h3>Reset Submenu</h3>
+        <ul>
+          <li><strong>Reset entire config</strong> — a pre-reset backup is saved automatically</li>
+          <li><strong>Reset a single module</strong></li>
+        </ul>
+        <p>Each operation pauses with <em>Press enter to continue...</em> so you can read the result before the screen refreshes.</p>
+      </section>
+
+      <section id="page-modules" class="page">
+        <h2>Modules</h2>
+        <p>Modules are the building blocks of your fastfetch display. Each module corresponds to a piece of system information. Manage them with <code>ff module ...</code> (the legacy alias <code>ff var ...</code> still works).</p>
+        <h3>Default Order &amp; Positions</h3>
+        <table>
+          <thead>
+            <tr><th>Position</th><th>Module</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>title</td><td></td></tr>
+            <tr><td>1</td><td>separator</td><td></td></tr>
+            <tr><td>2</td><td>os</td><td>Becomes <code>{type:"custom", key:"OS", format:"..."}</code> when renamed</td></tr>
+            <tr><td>3</td><td>host</td><td></td></tr>
+            <tr><td>4</td><td>kernel</td><td></td></tr>
+            <tr><td>5</td><td>uptime</td><td></td></tr>
+            <tr><td>6</td><td>packages</td><td></td></tr>
+            <tr><td>7</td><td>shell</td><td></td></tr>
+            <tr><td>8</td><td>de</td><td></td></tr>
+            <tr><td>9</td><td>wm</td><td></td></tr>
+            <tr><td>10</td><td>cpu</td><td></td></tr>
+            <tr><td>11</td><td>memory</td><td></td></tr>
+            <tr><td>12</td><td>swap</td><td></td></tr>
+            <tr><td>13</td><td>gpu</td><td></td></tr>
+            <tr><td>14</td><td>disk</td><td>Defaults to <code>{type:"disk", folders:"/"}</code></td></tr>
+            <tr><td>15</td><td>locale</td><td></td></tr>
+            <tr><td>16</td><td>break</td><td></td></tr>
+            <tr><td>17</td><td>colors</td><td></td></tr>
+          </tbody>
+        </table>
+        <p>New modules added with <code>ff module add</code> are inserted at their default position when one is defined; otherwise they're appended to the end.</p>
+        <h3>Module States</h3>
+        <p>A module can be either:</p>
+        <ul>
+          <li><strong>String</strong> — simple name like <code>"kernel"</code></li>
+          <li><strong>Object</strong> — enriched form with custom keys, e.g. <code>{"type":"disk","folders":"/"}</code></li>
+        </ul>
+        <p>When you set a property on a string module, it automatically converts to an object. The <code>reset</code> command reverts an object back to its default form, and <code>ff module reset all</code> resets every known module at once.</p>
+        <h3>Toggling &amp; Inspecting</h3>
+        <pre><code>ff module toggle gpu     # remove if present, add if missing
+ff module show disk      # print the module's JSON</code></pre>
+      </section>
+
+      <section id="page-logo" class="page">
+        <h2>Logo</h2>
+        <p>fastfetch-config supports several logo sources:</p>
+        <h3>Auto-detection</h3>
+        <pre><code>ff logo auto</code></pre>
+        <p>Restores automatic logo detection based on your distro.</p>
+        <h3>Built-in Logos</h3>
+        <pre><code>ff logo arch
+ff logo ubuntu
+ff logo fedora
+ff logo steamos</code></pre>
+        <p>Use any name from <code>fastfetch --print-logos</code>. List them all with <code>ff list-logos</code>, which also shows the contents of your custom logos directory.</p>
+        <h3>Bundled ASCII Art Logos</h3>
+        <pre><code>ff logo install    # installs: dragon sword robot cat pacman dog bear wolf
+ff logo dragon</code></pre>
+        <p>These are copied into <code>~/.config/fastfetch/logos/</code>.</p>
+        <h3>Custom File</h3>
+        <pre><code>ff logo ~/my-logo.txt
+ff logo my-custom</code></pre>
+        <p>Provide a path to a file, or a name that matches a file in <code>~/.config/fastfetch/logos/</code>. Files are copied into the logos directory automatically on first use. Image files (png, jpg, gif, webp, bmp, tiff) automatically switch the logo to chafa mode.</p>
+        <h3>Fitting &amp; Dimensions</h3>
+        <pre><code>ff logo fit            # recalculate size for the current terminal
+ff logo width          # show current width
+ff logo width 40       # set width manually
+ff logo height 20      # set height manually
+ff logo preview        # show logo type, source, and dimensions</code></pre>
+        <p><code>fit</code> measures your terminal and the rendered output, clamping sizes to sensible ranges. Text logos are fitted by line height; chafa logos by both width and height. Fitting happens automatically whenever you change the logo or toggle chafa.</p>
+        <h3>Logo Gallery</h3>
+        <pre><code>ff gallery</code></pre>
+        <p>A paginated browser (15 per page) for every built-in logo:</p>
+        <ul>
+          <li>Type a number to <strong>preview</strong> that logo full-size, then press <code>y</code> to apply it</li>
+          <li><code>n</code>/<code>p</code> — next / previous page</li>
+          <li><code>/</code> — filter by name substring</li>
+          <li><code>r</code> — reset filter</li>
+          <li><code>q</code> — quit</li>
+        </ul>
+        <p>Applying a logo from the gallery runs it through the same fitting logic as <code>ff logo</code>.</p>
+      </section>
+
+      <section id="page-chafa" class="page">
+        <h2>Chafa (Image Logos)</h2>
+        <p>Chafa renders real images (PNG, JPG, GIF, WebP...) directly in your terminal as colored character art. It requires the <code>chafa</code> package, which the installer sets up for you.</p>
+        <p>Chafa is <strong>disabled by default</strong>. Enable it with:</p>
+        <pre><code>ff chafa on</code></pre>
+        <h3>Modes</h3>
+        <table>
+          <thead>
+            <tr><th>Mode</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>on</code></td><td>Standard chafa rendering</td></tr>
+            <tr><td><code>raw</code></td><td>Chafa raw mode — output passes straight through to the terminal</td></tr>
+            <tr><td><code>off</code></td><td>Disable chafa and revert to auto logo detection</td></tr>
+          </tbody>
+        </table>
+        <h3>Using an Image</h3>
+        <pre><code>ff chafa on ~/Pictures/wallpaper.png   # enable with an image
+ff chafa raw ~/Pictures/wallpaper.png  # raw mode with an image
+ff chafa off                           # back to auto logos</code></pre>
+        <p>Passing an image copies it into <code>~/.config/fastfetch/logos/</code> and points the config at it. Setting an image file via <code>ff logo &lt;file&gt;</code> enables chafa mode automatically.</p>
+        <h3>Fitting to Your Terminal</h3>
+        <pre><code>ff chafa fit    # re-measure the terminal and resize the logo</code></pre>
+        <p>Fitting accounts for the width of your fetch output so the info columns never overlap the image. It runs automatically when toggling chafa or changing the logo; resize your terminal and run <code>ff chafa fit</code> to adapt.</p>
+        <p>When chafa is active, plain <code>ff</code> launches fastfetch with <code>--pipe false</code> so colors render correctly.</p>
+      </section>
+
+      <section id="page-osname" class="page">
+        <h2>OS Name</h2>
+        <p>Override the displayed operating system name:</p>
+        <pre><code>ff osname "SteamOS holo 3.7.25 (steamdeck) x86_64"
+ff osname auto</code></pre>
+        <p>When you set a custom OS name, the <code>os</code> module is transformed into a <code>custom</code> module with <code>key: "OS"</code>. Running <code>ff osname auto</code> restores the default <code>os</code> module with auto-detection.</p>
+        <h3>Random Spoofing</h3>
+        <pre><code>ff osname random</code></pre>
+        <p>Picks a surprise OS name from a pool of 100+ entries — everything from Arch Linux and FreeBSD to TempleOS, Windows 98, Haiku, Plan 9, and KolibriOS.</p>
+        <h3>OS Name + Logo Combo</h3>
+        <pre><code>ff osname-logo "MyOS 1.0"       # sets both OS name and logo to "MyOS 1.0"
+ff osname-logo "MyOS" arch      # OS name "MyOS", logo "arch"</code></pre>
+      </section>
+
+      <section id="page-colors" class="page">
+        <h2>Colors</h2>
+        <p>Override specific logo color slots (1–9):</p>
+        <pre><code>ff color 1 blue
+ff color 2 93
+ff color 3 orange
+ff color 4 #FF8000
+ff color 5 skobeloff
+ff color list
+ff color reset</code></pre>
+        <h3>Supported Color Values</h3>
+        <ul>
+          <li><strong>Named colors</strong> — 150+ built-in names: red, orange, gold, emerald, lime, pink, crimson, coral, indigo, mint, pearl, silver, diamond, skobeloff, purple, charcoal, denim, sapphire, wine, copper, and many more</li>
+          <li><strong>Raw hex codes</strong> — e.g. <code>#FF8000</code></li>
+          <li><strong>ANSI codes</strong> — 32, 93, 208, etc.</li>
+        </ul>
+        <h3>Finding Names</h3>
+        <pre><code>ff color names           # list every supported name
+ff color search pur      # find names containing "pur"</code></pre>
+        <p><strong>Note:</strong> The <code>orange</code> color is mapped to hex <code>#FF8000</code> because ANSI 208 appeared as white on some terminals.</p>
+      </section>
+
+      <section id="page-backup" class="page">
+        <h2>Backup &amp; Restore</h2>
+        <p>Save and restore your entire fastfetch configuration.</p>
+        <h3>Creating Backups</h3>
+        <pre><code>ff backup                  # timestamp-based name
+ff backup my-config        # named backup</code></pre>
+        <p>Backups are stored as <code>.jsonc</code> files in <code>~/.config/fastfetch/backups/</code>. Overwriting an existing backup name asks for confirmation first. A pre-reset backup is taken automatically before <code>ff reset</code>, and a pre-import backup before <code>ff import</code>.</p>
+        <h3>Listing Backups</h3>
+        <pre><code>ff backup list</code></pre>
+        <p>Shows each backup with its creation date.</p>
+        <h3>Restoring</h3>
+        <pre><code>ff restore my-config</code></pre>
+        <p>Copies the backup back to <code>config.jsonc</code>, overwriting the current config.</p>
+        <h3>Removing Backups</h3>
+        <pre><code>ff backup rm my-config
+ff backup remove my-config</code></pre>
+        <h3>Cleaning Old Backups</h3>
+        <pre><code>ff clean         # remove backups older than 30 days
+ff clean 7       # remove backups older than 7 days</code></pre>
+        <h3>Diffing Against a Backup</h3>
+        <pre><code>ff diff                # compare against the most recent backup
+ff diff my-config      # compare against a specific backup</code></pre>
+        <h3>Export &amp; Import</h3>
+        <pre><code>ff export my-config.jsonc    # copy config anywhere
+ff import my-config.jsonc    # bring it back (auto-backup first)</code></pre>
+        <h3>TUI Backup Menu</h3>
+        <p>From the main TUI menu, select <strong>9) Backup / Restore</strong> (or press <code>b</code>) to access create, list, restore, and remove options.</p>
+      </section>
+
+      <section id="page-updating" class="page">
+        <h2>Updating</h2>
+        <p>fastfetch-config updates itself straight from GitHub releases.</p>
+        <pre><code>ff update                    # download + install latest stable
+ff update check              # just check, don't install
+ff update -prerelease        # install latest, including prereleases
+ff update check -prerelease  # check including prereleases</code></pre>
+        <h3>What happens on update?</h3>
+        <ol>
+          <li>The tool queries the GitHub API for the latest release</li>
+          <li>Compares it against your installed version (<code>ff version</code>)</li>
+          <li>Shows the changelog from the release notes</li>
+          <li>Asks for confirmation, downloads <code>install-ff.sh</code> and runs it</li>
+        </ol>
+        <h3>Prerelease Channel</h3>
+        <p>Prereleases are versions tagged with <code>-prerelease</code>. They're skipped by default; opt in per-command with the <code>-prerelease</code> flag. Once you're on a prerelease build, plain <code>ff update</code> keeps following the prerelease line until a stable release catches up.</p>
+        <h3>Quiet Update Check</h3>
+        <p>Whenever you run a command, fastfetch-config silently checks GitHub at most once per day. If something new is out you'll see a one-line notice:</p>
+        <pre><code>[update] Version V1.6.8 available! Run 'ff update' to install the latest build.</code></pre>
+      </section>
+
+      <section id="page-troubleshooting" class="page">
+        <h2>Troubleshooting</h2>
+        <h3>Built-in Checks</h3>
+        <pre><code>ff doctor        # pass/fail report of common issues
+ff diag          # full environment dump</code></pre>
+        <p><code>doctor</code> verifies jq, fastfetch, config validity (must be real JSON), and that the logos &amp; backups directories exist. <code>diag</code> prints versions, paths, module list, current logo, OS name, chafa state and shell/terminal info — everything useful for a bug report.</p>
+        <h3>Common Issues</h3>
+        <table>
+          <thead>
+            <tr><th>Symptom</th><th>Fix</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>ff: command not found</code> after install</td><td><code>~/.local/bin</code> isn't on your PATH yet — run <code>source ~/.bashrc</code> (or open a new terminal)</td></tr>
+            <tr><td><code>jq is required</code></td><td>Install jq with your package manager (e.g. <code>sudo pacman -S jq</code>)</td></tr>
+            <tr><td>Installer says "Unknown distro"</td><td>Install <code>jq</code>, <code>chafa</code> and <code>imagemagick</code> manually, then re-run the installer</td></tr>
+            <tr><td>Config errors / invalid JSON</td><td><code>ff restore &lt;backup&gt;</code> or <code>ff reset</code>; verify with <code>ff doctor</code></td></tr>
+            <tr><td>Logo wrong size after resizing terminal</td><td><code>ff logo fit</code> (or <code>ff chafa fit</code> for images)</td></tr>
+            <tr><td>Image renders oddly in some terminals</td><td>Try raw mode: <code>ff chafa raw</code></td></tr>
+            <tr><td>Made a mess?</td><td><code>ff backup before-tweaks</code> <em>before</em> experimenting next time; <code>ff reset</code> gets you back to defaults</td></tr>
+          </tbody>
+        </table>
+        <h3>Still stuck?</h3>
+        <p>Run <code>ff diag</code> and open an issue at <a href="https://github.com/aaronYTDev/fastfetch-config/issues" target="_blank" rel="noopener">github.com/aaronYTDev/fastfetch-config/issues</a> with the output attached.</p>
+      </section>
+
+      <section id="page-examples" class="page">
+        <h2>Examples</h2>
+        <h3>Quick Start</h3>
+        <pre><code>bash install-ff.sh
+ff tui
+# Navigate the menu to configure your setup</code></pre>
+        <h3>Steam Deck / SteamOS Spoof</h3>
+        <pre><code>ff osname "SteamOS holo 3.7.25 (steamdeck) x86_64"
+ff logo steamos</code></pre>
+        <h3>Full Custom Configuration</h3>
+        <pre><code># Set up a gaming-themed display
+ff osname "Arch Linux (gaming)"
+ff logo arch
+ff color 1 cyan
+ff color 2 blue
+ff color 3 magenta
+
+# Add and configure modules
+ff module add gpu
+ff module add disk
+ff module set disk folders /
+ff module mv gpu 14             # move gpu to position 14
+
+# Add a custom module
+ff module add custom
+ff module set custom key "My Info"
+ff module set custom format "Custom value here"</code></pre>
+        <h3>Image Logo Setup</h3>
+        <pre><code>ff chafa on ~/Pictures/penguin.png   # enable image rendering
+ff chafa fit                          # fine-tune to terminal size
+ff chafa off                          # revert to ASCII logos</code></pre>
+        <h3>Browsing Logos</h3>
+        <pre><code>ff gallery        # browse, search ("/"), preview, and apply
+ff logo install   # grab the bundled ASCII art set
+ff logo dragon</code></pre>
+        <h3>Backup Workflow</h3>
+        <pre><code># Before making changes
+ff backup before-tweaks
+
+# Make your changes...
+
+# See what changed since the backup
+ff diff before-tweaks
+
+# If something goes wrong
+ff restore before-tweaks
+
+# Housekeeping
+ff clean 14       # drop backups older than two weeks</code></pre>
+        <h3>Troubleshooting</h3>
+        <pre><code>ff doctor    # verify jq, fastfetch, config validity, directories
+ff diag      # full environment dump: versions, paths, current settings
+ff search d  # find anything matching "d" across modules and colors</code></pre>
+        <h3>Minimal Config Reset</h3>
+        <pre><code># Reset everything (auto-backup first)
+ff reset
+
+# Reset just one module
+ff reset colors</code></pre>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
