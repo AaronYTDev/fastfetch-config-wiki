@@ -1,220 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Unofficial fastfetch-config documentation and wiki.">
-  <title>fastfetch-config Wiki</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07080d">
+  <meta name="description" content="Unofficial documentation for fastfetch-config, the terminal UI for managing Fastfetch configurations.">
+  <title>fastfetch-config wiki</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="ambient ambient-a"></div>
-  <div class="ambient ambient-b"></div>
+<div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="noise"></div>
 
-  <header class="topbar">
-    <a class="brand" href="#home" data-page="home">
-      <span class="brand-mark">&gt;_</span>
-      <span>
-        <strong>fastfetch-config</strong>
-        <small>community wiki</small>
-      </span>
-    </a>
+<header class="topbar">
+  <a class="brand" href="#home" aria-label="fastfetch-config home">
+    <span class="brand-mark">ff</span>
+    <span><b>fastfetch-config</b><small>community wiki</small></span>
+  </a>
+  <div class="top-actions">
+    <button id="searchBtn" class="icon-btn" title="Search (Ctrl K)">⌕ <span>Search</span></button>
+    <button id="themeBtn" class="icon-btn" title="Toggle theme">◐</button>
+    <a class="github-btn" href="https://github.com/AaronYTDev/fastfetch-config" target="_blank" rel="noreferrer">GitHub ↗</a>
+  </div>
+</header>
 
-    <div class="top-actions">
-      <button class="search-trigger" id="searchTrigger" aria-label="Open search">
-        <span>Search documentation</span><kbd>⌘ K</kbd>
-      </button>
-      <a class="github-link" href="https://github.com/AaronYTDev/fastfetch-config" target="_blank" rel="noreferrer">GitHub ↗</a>
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☼</button>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-label">DOCUMENTATION</div>
+    <nav>
+      <a href="#home" data-page="home">Overview</a>
+      <a href="#install" data-page="install">Installation</a>
+      <a href="#quickstart" data-page="quickstart">Quick start</a>
+      <a href="#tui" data-page="tui">Using the TUI</a>
+      <a href="#config" data-page="config">Configuration</a>
+      <a href="#modules" data-page="modules">Modules</a>
+      <a href="#logos" data-page="logos">Logos & images</a>
+      <a href="#colors" data-page="colors">Colors</a>
+      <a href="#backups" data-page="backups">Backups</a>
+      <a href="#troubleshooting" data-page="troubleshooting">Troubleshooting</a>
+      <a href="#reference" data-page="reference">Command reference</a>
+      <a href="#faq" data-page="faq">FAQ</a>
+    </nav>
+    <div class="side-card">
+      <span class="status-dot"></span>
+      <div><b>V1.6.8</b><small>documented project version</small></div>
     </div>
-  </header>
+  </aside>
 
-  <div class="layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-inner">
-        <div class="side-label">DOCUMENTATION</div>
-        <nav id="nav">
-          <a href="#home" data-page="home" class="nav-item active"><span>⌂</span> Overview</a>
-          <a href="#installation" data-page="installation" class="nav-item"><span>↓</span> Installation</a>
-          <a href="#getting-started" data-page="getting-started" class="nav-item"><span>›</span> Getting started</a>
-          <a href="#configuration" data-page="configuration" class="nav-item"><span>⚙</span> Configuration</a>
-          <a href="#logos" data-page="logos" class="nav-item"><span>◆</span> Logos & images</a>
-          <a href="#colors" data-page="colors" class="nav-item"><span>◈</span> Colors</a>
-          <a href="#troubleshooting" data-page="troubleshooting" class="nav-item"><span>!</span> Troubleshooting</a>
-        </nav>
-
-        <div class="side-divider"></div>
-        <div class="side-label">PROJECT</div>
-        <a href="https://github.com/AaronYTDev/fastfetch-config/issues" target="_blank" rel="noreferrer" class="nav-item"><span>◌</span> Issues ↗</a>
-        <a href="https://github.com/AaronYTDev/fastfetch-config/releases" target="_blank" rel="noreferrer" class="nav-item"><span>◆</span> Releases ↗</a>
-
-        <div class="sidebar-footer">
-          <span class="status-dot"></span>
-          <span>Documentation build</span>
-          <strong>stable</strong>
+  <main id="app">
+    <section class="page active" data-route="home">
+      <div class="hero">
+        <div class="eyebrow"><span></span> FASTFETCH TOOLING</div>
+        <h1>A better way to<br><em>shape your terminal.</em></h1>
+        <p class="hero-copy">A practical, visual wiki for <b>fastfetch-config</b>, a TUI that helps you manage Fastfetch without living inside a text editor every time you want to move a module three pixels to the left.</p>
+        <div class="hero-actions">
+          <a class="primary" href="#quickstart">Get started <span>→</span></a>
+          <a class="secondary" href="#config">Explore configuration</a>
         </div>
       </div>
-    </aside>
 
-    <main class="content">
-      <div class="mobile-nav">
-        <button id="mobileMenu">☰ <span>Sections</span></button>
+      <div class="terminal hero-terminal">
+        <div class="term-head"><span class="lights"><i></i><i></i><i></i></span><span>~/terminal</span><span>fastfetch</span></div>
+        <pre><span class="muted">$</span> fastfetch
+<span class="accent">        /\</span>       <b>user@host</b>
+<span class="accent">       /  \</span>      <span class="key">OS</span>       Arch Linux
+<span class="accent">      / /\ \</span>     <span class="key">Kernel</span>   6.x
+<span class="accent">     / ____ \</span>    <span class="key">Uptime</span>   3h 42m
+<span class="accent">    /_/    \_\</span>   <span class="key">CPU</span>      8 cores
+                    <span class="key">Memory</span>   7.2 GiB / 32 GiB</pre>
       </div>
 
-      <article id="page-home" class="page active">
-        <div class="hero">
-          <div class="eyebrow"><span class="pulse"></span> TUI configuration toolkit</div>
-          <h1>Make Fastfetch<br><em>yours.</em></h1>
-          <p class="hero-copy">A terminal-first configuration manager for <strong>Fastfetch</strong>. Build, edit, preview, back up and personalize your Fastfetch setup without wrestling with JSON by hand.</p>
-          <div class="hero-actions">
-            <a class="button primary" href="#installation" data-page="installation">Get started <span>→</span></a>
-            <a class="button ghost" href="https://github.com/AaronYTDev/fastfetch-config" target="_blank" rel="noreferrer">View source</a>
-          </div>
+      <div class="section-head"><span>WHY THIS EXISTS</span><h2>Fastfetch, minus the config-file archaeology.</h2></div>
+      <div class="grid three">
+        <article class="card feature"><div class="card-icon">⌘</div><h3>Terminal-first</h3><p>Manage your Fastfetch setup from a purpose-built TUI instead of manually hunting through JSONC whenever inspiration strikes.</p></article>
+        <article class="card feature"><div class="card-icon">✦</div><h3>Highly customizable</h3><p>Modules, logos, colors, layout and display details can be shaped around the setup you actually use.</p></article>
+        <article class="card feature"><div class="card-icon">↺</div><h3>Backups included</h3><p>The tool keeps configuration backups, giving experimentation a slightly less terrifying failure mode.</p></article>
+      </div>
+
+      <div class="callout warning"><b>Experimental software:</b> the project itself describes macOS support as very experimental and says it is not confirmed to work on every operating system. Linux, especially Arch-based systems, is the primary target.</div>
+
+      <div class="section-head"><span>PROJECT</span><h2>At a glance</h2></div>
+      <div class="facts">
+        <div><small>PROJECT</small><b>fastfetch-config</b></div>
+        <div><small>VERSION</small><b>V1.6.8</b></div>
+        <div><small>AUTHORS</small><b>aaronYTDev + Madrinth</b></div>
+        <div><small>CONFIG</small><b>~/.config/fastfetch</b></div>
+      </div>
+    </section>
+
+    <section class="page" data-route="install">
+      <div class="page-title"><span class="eyebrow"><span></span> SETUP</span><h1>Installation</h1><p>Get Fastfetch and fastfetch-config installed, then let the TUI take over the repetitive bits.</p></div>
+      <div class="doc-grid">
+        <div>
+          <h2>Stable install</h2>
+          <p>The project provides a curl-based installer for the stable release.</p>
+          <div class="code"><button class="copy">copy</button><pre>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash</pre></div>
+          <h2>Testing build</h2>
+          <p>Use the testing installer when you intentionally want the less boring version.</p>
+          <div class="code"><button class="copy">copy</button><pre>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff-testing.sh | bash</pre></div>
+          <div class="callout danger"><b>Read the script first if you're cautious.</b> Piping a remote shell script straight into Bash is convenient, but downloading it, reviewing it, then running it is the more defensible habit.</div>
         </div>
+        <aside class="toc-card"><b>Installer checks</b><ul><li>Detects the distro</li><li>Checks <code>jq</code></li><li>Checks <code>chafa</code></li><li>Checks ImageMagick <code>convert</code></li><li>Creates the Fastfetch config area</li><li>Installs the <code>fastfetch-config</code> command</li></ul></aside>
+      </div>
+      <h2>Supported package-manager families</h2>
+      <div class="platforms">
+        <span>Arch / CachyOS / EndeavourOS</span><span>Ubuntu / Debian / Mint</span><span>Fedora / RHEL</span><span>openSUSE</span><span>Alpine</span><span>Void</span><span>Gentoo</span>
+      </div>
+      <p class="muted-note">Unknown distributions are not automatically supported by the installer. In that case, install the required dependencies manually.</p>
+    </section>
 
-        <div class="notice">
-          <span class="notice-icon">i</span>
-          <div><strong>Project status</strong><br><span>fastfetch-config is actively evolving. It is best supported on Arch Linux and Arch-based distributions. macOS support is experimental.</span></div>
-        </div>
+    <section class="page" data-route="quickstart">
+      <div class="page-title"><span class="eyebrow"><span></span> FIRST RUN</span><h1>Quick start</h1><p>From zero to a customized terminal in a few deliberate steps.</p></div>
+      <div class="steps">
+        <article><b>01</b><div><h3>Install Fastfetch</h3><p>Fastfetch itself must be available on your system before this project can manage its configuration.</p><div class="code"><button class="copy">copy</button><pre>fastfetch --version</pre></div></div></article>
+        <article><b>02</b><div><h3>Install fastfetch-config</h3><p>Run the stable installer, then make sure the command is on your PATH.</p><div class="code"><button class="copy">copy</button><pre>fastfetch-config</pre></div></div></article>
+        <article><b>03</b><div><h3>Make a change</h3><p>Use the TUI to adjust modules, colors or logos. The tool writes your Fastfetch configuration for you.</p></div></article>
+        <article><b>04</b><div><h3>Preview it</h3><p>Run Fastfetch directly and inspect the result. Terminal configuration is best judged where it actually lives: in the terminal.</p><div class="code"><button class="copy">copy</button><pre>fastfetch</pre></div></div></article>
+      </div>
+      <div class="callout tip"><b>Tip:</b> Keep a known-good config before doing a large redesign. Your future self is a separate person who deserves basic kindness.</div>
+    </section>
 
-        <section class="section">
-          <div class="section-heading"><span>01</span><h2>What is fastfetch-config?</h2></div>
-          <p>fastfetch-config is a terminal user interface designed to make managing a Fastfetch configuration easier. Instead of repeatedly editing configuration files, the tool provides menus for changing settings and working with logos, colors, modules and backups.</p>
+    <section class="page" data-route="tui">
+      <div class="page-title"><span class="eyebrow"><span></span> INTERFACE</span><h1>Using the TUI</h1><p>The terminal UI is the main reason this project exists. It wraps the config in a menu-driven workflow.</p></div>
+      <div class="mock-ui">
+        <div class="mock-title">fastfetch-config <span>V1.6.8</span></div>
+        <div class="mock-body"><aside><b>CONFIG</b><span class="selected">› Modules</span><span>› Logo</span><span>› Colors</span><span>› Display</span><span>› Backups</span></aside><div class="mock-main"><small>MODULES</small><h3>Choose what Fastfetch displays</h3><label>✓ OS</label><label>✓ Host</label><label>✓ Kernel</label><label>✓ CPU</label><label>✓ Memory</label><label>□ Battery</label></div></div>
+      </div>
+      <div class="grid two">
+        <article class="card"><h3>What it manages</h3><ul class="clean"><li>Fastfetch module selection</li><li>Logo settings and custom logo files</li><li>Named colors</li><li>Configuration backups</li><li>JSONC configuration values</li></ul></article>
+        <article class="card"><h3>Where it lives</h3><p>The installer uses:</p><div class="code"><pre>$XDG_CONFIG_HOME/fastfetch</pre></div><p>When <code>XDG_CONFIG_HOME</code> is unset, that normally resolves to <code>~/.config/fastfetch</code>.</p></article>
+      </div>
+    </section>
 
-          <div class="cards three">
-            <div class="feature-card"><span class="feature-icon">⌘</span><h3>Terminal native</h3><p>Designed around a TUI workflow that fits naturally into a Linux terminal.</p></div>
-            <div class="feature-card"><span class="feature-icon">✦</span><h3>Personalization</h3><p>Customize logos, colors and Fastfetch modules without starting from scratch.</p></div>
-            <div class="feature-card"><span class="feature-icon">↺</span><h3>Backups</h3><p>Keep configuration backups around so experimentation doesn't have to be terrifying.</p></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-heading"><span>02</span><h2>Quick install</h2></div>
-          <p>The stable installer can be run directly from the repository:</p>
-          <div class="code-wrap">
-            <button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash">Copy</button>
-            <pre><code>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash</code></pre>
-          </div>
-          <p class="muted">For the testing build, replace <code>install-ff.sh</code> with <code>install-ff-testing.sh</code>.</p>
-        </section>
-      </article>
-
-      <article id="page-installation" class="page">
-        <div class="page-head"><span class="eyebrow">INSTALLATION</span><h1>Install fastfetch-config</h1><p>Get the TUI onto your system, then let it handle the configuration side of things.</p></div>
-        <section class="section">
-          <h2>Requirements</h2>
-          <p>The installer checks for and can install dependencies including <code>jq</code>, <code>chafa</code>, and ImageMagick. Package installation is supported for several Linux distributions.</p>
-          <div class="platform-grid">
-            <div><b>Arch</b><span>pacman</span></div><div><b>Debian / Ubuntu</b><span>apt</span></div>
-            <div><b>Fedora</b><span>dnf</span></div><div><b>openSUSE</b><span>zypper</span></div>
-            <div><b>Alpine</b><span>apk</span></div><div><b>Void</b><span>xbps</span></div>
-            <div><b>Gentoo</b><span>emerge</span></div><div><b>macOS</b><span>experimental</span></div>
-          </div>
-        </section>
-        <section class="section">
-          <h2>Stable installation</h2>
-          <div class="code-wrap"><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash">Copy</button><pre><code>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash</code></pre></div>
-        </section>
-        <section class="section">
-          <h2>Testing installation</h2>
-          <p>The testing installer tracks the project's testing build and may contain changes that have not reached the stable release.</p>
-          <div class="code-wrap"><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff-testing.sh | bash">Copy</button><pre><code>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff-testing.sh | bash</code></pre></div>
-        </section>
-      </article>
-
-      <article id="page-getting-started" class="page">
-        <div class="page-head"><span class="eyebrow">GETTING STARTED</span><h1>Your first configuration</h1><p>Once installed, the tool gives you a terminal UI for working with your Fastfetch configuration.</p></div>
-        <section class="section">
-          <div class="steps">
-            <div class="step"><span>01</span><div><h3>Launch the tool</h3><p>Run <code>fastfetch-config</code> from your terminal.</p></div></div>
-            <div class="step"><span>02</span><div><h3>Choose what to edit</h3><p>Use the TUI menus to navigate configuration options, logos, colors and other settings.</p></div></div>
-            <div class="step"><span>03</span><div><h3>Save and preview</h3><p>Apply your changes and run Fastfetch to see the result in your shell.</p></div></div>
-            <div class="step"><span>04</span><div><h3>Back up before chaos</h3><p>Use the backup functionality before making a particularly questionable customization. Future-you may appreciate the gesture.</p></div></div>
-          </div>
-        </section>
-      </article>
-
-      <article id="page-configuration" class="page">
-        <div class="page-head"><span class="eyebrow">CONFIGURATION</span><h1>Configuration</h1><p>The project works with Fastfetch's JSON/JSONC configuration format and provides a friendlier TUI around it.</p></div>
-        <section class="section">
-          <h2>Default configuration</h2>
-          <p>The installer creates a Fastfetch configuration with a logo section and a set of useful system-information modules.</p>
-          <div class="code-wrap tall"><button class="copy" data-copy='{"logo":{"type":"auto","source":""},"modules":["title","separator","os","host","kernel","uptime","packages","shell","de","wm","cpu","memory","swap","gpu","disk","locale","break","colors"]}'>Copy</button><pre><code>{
+    <section class="page" data-route="config">
+      <div class="page-title"><span class="eyebrow"><span></span> CORE CONCEPT</span><h1>Configuration</h1><p>Fastfetch uses JSONC, JSON with comments. fastfetch-config edits that configuration rather than replacing Fastfetch itself.</p></div>
+      <h2>The basic shape</h2>
+      <div class="code large"><button class="copy">copy</button><pre>{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
   "logo": {
     "type": "auto",
     "source": "",
     "padding": { "right": 4 }
   },
   "modules": [
-    "title", "separator", "os", "host", "kernel",
-    "uptime", "packages", "shell", "de", "wm",
-    "cpu", "memory", "swap", "gpu", "disk",
-    "locale", "break", "colors"
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "de",
+    "wm",
+    "cpu",
+    "memory",
+    "gpu",
+    "disk",
+    "locale",
+    "break",
+    "colors"
   ]
-}</code></pre></div>
-        </section>
-        <section class="section">
-          <h2>Where does it live?</h2>
-          <p>The project uses the standard XDG configuration location when available:</p>
-          <div class="path-card"><span>~/.config/fastfetch</span><small>or $XDG_CONFIG_HOME/fastfetch</small></div>
-          <p class="muted">The tool's configuration file is <code>config.jsonc</code>; logos and backups are stored alongside it.</p>
-        </section>
-      </article>
+}</pre></div>
+      <div class="grid two">
+        <article class="card"><h3><code>logo</code></h3><p>Controls how the Fastfetch logo is selected, rendered and padded.</p></article>
+        <article class="card"><h3><code>modules</code></h3><p>The ordered list of information Fastfetch prints. Order matters because it becomes the visual structure of your output.</p></article>
+      </div>
+      <h2>Useful Fastfetch commands</h2>
+      <div class="command-table">
+        <div><code>fastfetch --gen-config</code><span>Generate a minimal config.</span></div>
+        <div><code>fastfetch --gen-config-full</code><span>Generate a fuller config containing optional settings.</span></div>
+        <div><code>fastfetch --help</code><span>Show command-line help.</span></div>
+        <div><code>fastfetch -c all.jsonc</code><span>Try an example/all-modules configuration when available.</span></div>
+        <div><code>fastfetch -s cpu:memory --format json</code><span>Inspect module data in JSON form.</span></div>
+      </div>
+      <div class="callout tip"><b>Schema support:</b> adding a JSON schema URL to the configuration lets editors such as VS Code provide completion and validation.</div>
+    </section>
 
-      <article id="page-logos" class="page">
-        <div class="page-head"><span class="eyebrow">LOGOS & IMAGES</span><h1>Logos</h1><p>Because a terminal displaying your operating system information apparently isn't personal enough.</p></div>
-        <section class="section">
-          <h2>Logo directory</h2>
-          <p>Custom logos are stored in the Fastfetch configuration directory under <code>logos/</code>. The project also uses <code>chafa</code> for terminal image rendering.</p>
-          <div class="terminal-demo">
-            <div class="terminal-top"><i></i><i></i><i></i><span>fastfetch-config</span></div>
-            <div class="terminal-body"><span class="dim">$</span> fastfetch-config<br><br><span class="cyan">╔══════════════════════════════════════╗</span><br><span class="cyan">║</span>       <b>FASTFETCH CONFIG</b>           <span class="cyan">║</span><br><span class="cyan">╠══════════════════════════════════════╣</span><br><span class="cyan">║</span>  Logo manager                      <span class="cyan">║</span><br><span class="cyan">║</span>  Configuration                     <span class="cyan">║</span><br><span class="cyan">║</span>  Backups                            <span class="cyan">║</span><br><span class="cyan">╚══════════════════════════════════════╝</span></div>
-          </div>
-        </section>
-      </article>
+    <section class="page" data-route="modules">
+      <div class="page-title"><span class="eyebrow"><span></span> DISPLAY DATA</span><h1>Modules</h1><p>Modules are the individual pieces of system information that make up the output.</p></div>
+      <div class="module-grid">
+        <article><b>title</b><span>User + host title line</span></article><article><b>os</b><span>Operating system</span></article><article><b>host</b><span>Host / machine information</span></article><article><b>kernel</b><span>Kernel version</span></article>
+        <article><b>uptime</b><span>System uptime</span></article><article><b>packages</b><span>Package count</span></article><article><b>shell</b><span>Current shell</span></article><article><b>de</b><span>Desktop environment</span></article>
+        <article><b>wm</b><span>Window manager</span></article><article><b>cpu</b><span>Processor details</span></article><article><b>memory</b><span>Memory usage</span></article><article><b>swap</b><span>Swap usage</span></article>
+        <article><b>gpu</b><span>Graphics information</span></article><article><b>disk</b><span>Disk usage</span></article><article><b>locale</b><span>Locale information</span></article><article><b>colors</b><span>Terminal color palette</span></article>
+      </div>
+      <h2>Custom module objects</h2>
+      <p>Fastfetch also supports object-based module definitions, which are useful when you want to override labels, colors or formatting.</p>
+      <div class="code"><button class="copy">copy</button><pre>{
+  "type": "os",
+  "key": "OS",
+  "keyColor": "blue",
+  "format": "{name} {version}"
+}</pre></div>
+      <p class="muted-note">The exact options available vary by module. Use Fastfetch's module help, for example <code>fastfetch -h cpu-format</code>, when you need the supported format fields.</p>
+    </section>
 
-      <article id="page-colors" class="page">
-        <div class="page-head"><span class="eyebrow">COLORS</span><h1>Color system</h1><p>The TUI includes a large named-color map so your configuration can be more colorful than a beige terminal prompt.</p></div>
-        <section class="section">
-          <h2>Named colors</h2>
-          <p>The project includes 120+ named colors in its internal color map. Examples include:</p>
-          <div class="swatches">
-            <div><i style="--c:#00ffff"></i><span>cyan</span><code>#00FFFF</code></div>
-            <div><i style="--c:#bf40bf"></i><span>purple</span><code>#BF40BF</code></div>
-            <div><i style="--c:#ff1493"></i><span>deeppink</span><code>#FF1493</code></div>
-            <div><i style="--c:#50c878"></i><span>emerald</span><code>#50C878</code></div>
-            <div><i style="--c:#4169e1"></i><span>royalblue</span><code>#4169E1</code></div>
-            <div><i style="--c:#ffd700"></i><span>gold</span><code>#FFD700</code></div>
-          </div>
-        </section>
-      </article>
+    <section class="page" data-route="logos">
+      <div class="page-title"><span class="eyebrow"><span></span> VISUALS</span><h1>Logos & images</h1><p>Fastfetch can use detected logos, built-in logos and file-based logos. The config tool also maintains a dedicated logos directory.</p></div>
+      <div class="grid two">
+        <article class="card"><h3>Auto detection</h3><p>Keep <code>"type": "auto"</code> when you want Fastfetch to choose a suitable logo automatically.</p></article>
+        <article class="card"><h3>Explicit source</h3><p>Set a source when you want a particular built-in logo or a custom file path.</p></article>
+        <article class="card"><h3>Custom files</h3><p>The project uses <code>~/.config/fastfetch/logos</code> as its logo storage directory.</p></article>
+        <article class="card"><h3>Image helpers</h3><p>The installer checks for <code>chafa</code> and ImageMagick's <code>convert</code>, which are used by the project's image-related workflow.</p></article>
+      </div>
+      <h2>Handy Fastfetch logo commands</h2>
+      <div class="command-table">
+        <div><code>fastfetch --list-logos</code><span>List available logos.</span></div>
+        <div><code>fastfetch --print-logos</code><span>Print available logo information.</span></div>
+      </div>
+    </section>
 
-      <article id="page-troubleshooting" class="page">
-        <div class="page-head"><span class="eyebrow">TROUBLESHOOTING</span><h1>When things explode</h1><p>A small collection of common things to check before blaming the terminal.</p></div>
-        <section class="section">
-          <div class="faq">
-            <details open><summary>Why does the installer say a dependency is missing?</summary><p>Make sure your package manager is available and that you have permission to install packages. The installer checks for <code>jq</code>, <code>chafa</code>, and ImageMagick.</p></details>
-            <details><summary>Does it work on macOS?</summary><p>There is experimental macOS support, but the project does not currently guarantee that everything works correctly there. Linux, especially Arch-based systems, is the best-supported environment.</p></details>
-            <details><summary>Can I change the generated configuration manually?</summary><p>Yes. The project is built around Fastfetch's normal configuration format, so manual editing remains possible. Just remember that future changes through the TUI may modify the same configuration.</p></details>
-            <details><summary>Where should I report a bug?</summary><p>Use the project's GitHub Issues page so the maintainers can track it properly.</p></details>
-          </div>
-        </section>
-      </article>
+    <section class="page" data-route="colors">
+      <div class="page-title"><span class="eyebrow"><span></span> PALETTE</span><h1>Colors</h1><p>fastfetch-config ships with a large named color map so you can work with readable names instead of remembering hexadecimal values for the rest of human history.</p></div>
+      <div class="swatches">
+        <span style="--c:#ff4d67">red</span><span style="--c:#ff8a3d">orange</span><span style="--c:#ffd43b">gold</span><span style="--c:#54d67a">green</span><span style="--c:#36d9d0">cyan</span><span style="--c:#4f8cff">blue</span><span style="--c:#9a6cff">purple</span><span style="--c:#f05fc0">pink</span>
+      </div>
+      <p>The project contains 120+ named colors. Examples include <code>red</code>, <code>crimson</code>, <code>gold</code>, <code>emerald</code>, <code>cyan</code>, <code>royalblue</code>, <code>indigo</code>, <code>purple</code>, <code>pink</code>, <code>silver</code>, <code>white</code> and <code>black</code>.</p>
+      <div class="callout tip"><b>Practical rule:</b> use high-contrast key colors and let the logo carry the visual personality. Terminal output becomes unreadable surprisingly quickly when every line is trying to be the main character.</div>
+    </section>
 
-      <footer>
-        <span>fastfetch-config wiki</span>
-        <span>Built for humans who apparently enjoy configuring terminals.</span>
-      </footer>
-    </main>
+    <section class="page" data-route="backups">
+      <div class="page-title"><span class="eyebrow"><span></span> SAFETY NET</span><h1>Backups</h1><p>The project keeps backups inside the Fastfetch configuration area so you can experiment without treating every edit like a one-way door.</p></div>
+      <div class="path-card"><span>BACKUP DIRECTORY</span><code>~/.config/fastfetch/backups</code></div>
+      <h2>Suggested workflow</h2>
+      <div class="timeline">
+        <div><i>1</i><b>Back up</b><span>Capture a known-good state before a major redesign.</span></div>
+        <div><i>2</i><b>Experiment</b><span>Change modules, colors, logos or formatting.</span></div>
+        <div><i>3</i><b>Preview</b><span>Run <code>fastfetch</code> and inspect the result.</span></div>
+        <div><i>4</i><b>Restore</b><span>If the result is cursed, restore the previous configuration.</span></div>
+      </div>
+    </section>
+
+    <section class="page" data-route="troubleshooting">
+      <div class="page-title"><span class="eyebrow"><span></span> FIXES</span><h1>Troubleshooting</h1><p>When the terminal decides that today is the day it stops cooperating.</p></div>
+      <details open><summary>“fastfetch-config: command not found”</summary><p>The installer places the command under <code>~/.local/bin</code>. Make sure that directory is on your PATH, then restart your shell or reload its configuration.</p><div class="code"><button class="copy">copy</button><pre>echo "$PATH" | tr ':' '\n' | grep -F "$HOME/.local/bin"</pre></div></details>
+      <details><summary>Missing jq / chafa / ImageMagick</summary><p>The installer checks for these dependencies. On unsupported distributions, install them yourself and run the tool again.</p></details>
+      <details><summary>macOS is broken</summary><p>That is not a shocking plot twist. The project explicitly labels macOS support as very experimental. Linux, particularly Arch-based systems, is the primary supported environment.</p></details>
+      <details><summary>Fastfetch itself works, but the config looks wrong</summary><p>Inspect <code>~/.config/fastfetch/config.jsonc</code>. Check module order, JSONC syntax, logo paths and formatting options. The Fastfetch JSON schema is useful in an editor.</p></details>
+      <details><summary>Custom logo does not render</summary><p>Verify the file exists and is readable. Also check that the relevant image/terminal rendering tools are installed when your chosen logo mode needs them.</p></details>
+      <div class="callout danger"><b>Important:</b> a Fastfetch configuration can contain a command module capable of running shell commands. Treat untrusted configs like executable content and review them before use.</div>
+    </section>
+
+    <section class="page" data-route="reference">
+      <div class="page-title"><span class="eyebrow"><span></span> CHEAT SHEET</span><h1>Command reference</h1><p>A compact reference for the commands you are most likely to reach for.</p></div>
+      <div class="reference-list">
+        <div><code>fastfetch</code><span>Run Fastfetch with the default configuration.</span></div>
+        <div><code>fastfetch-config</code><span>Launch this project's configuration TUI.</span></div>
+        <div><code>fastfetch --gen-config</code><span>Create a minimal Fastfetch configuration.</span></div>
+        <div><code>fastfetch --gen-config-full</code><span>Create a more complete configuration.</span></div>
+        <div><code>fastfetch --help</code><span>Show general help.</span></div>
+        <div><code>fastfetch --list-logos</code><span>List logo names.</span></div>
+        <div><code>fastfetch --print-logos</code><span>Print logo information.</span></div>
+        <div><code>fastfetch -c FILE</code><span>Run using a specific configuration file.</span></div>
+        <div><code>fastfetch -s MODULES --format json</code><span>Inspect module data as JSON.</span></div>
+      </div>
+      <div class="callout tip"><b>Remember:</b> Fastfetch's own <code>--help</code> output is the authoritative source for flags and module-specific options. This wiki is a friendly layer on top, not a replacement for the program's own documentation.</div>
+    </section>
+
+    <section class="page" data-route="faq">
+      <div class="page-title"><span class="eyebrow"><span></span> QUESTIONS</span><h1>FAQ</h1><p>The questions people eventually ask after poking the terminal with a stick.</p></div>
+      <details open><summary>Is fastfetch-config Fastfetch?</summary><p>No. Fastfetch is the system-information program. fastfetch-config is a separate TUI project that helps manage a Fastfetch configuration.</p></details>
+      <details><summary>Where is the config?</summary><p>By default, the project uses <code>$XDG_CONFIG_HOME/fastfetch</code>, falling back to <code>~/.config/fastfetch</code>.</p></details>
+      <details><summary>Does it support every OS?</summary><p>No guarantee. The repository says it works best on Arch Linux and Arch-based distributions. macOS support is explicitly described as very experimental.</p></details>
+      <details><summary>Who made it?</summary><p>The repository credits aaronYTDev and Madrinth.</p></details>
+      <details><summary>Is this official Fastfetch documentation?</summary><p>No. This is documentation for the fastfetch-config project. It uses Fastfetch's public documentation for concepts such as JSONC, modules and logos, while project-specific details come from the fastfetch-config repository.</p></details>
+    </section>
+  </main>
+</div>
+
+<div class="search-overlay" id="searchOverlay" aria-hidden="true">
+  <div class="search-box">
+    <div class="search-top"><input id="searchInput" placeholder="Search documentation..." autocomplete="off"><button id="closeSearch">Esc</button></div>
+    <div id="searchResults"></div>
   </div>
+</div>
 
-  <div class="search-overlay" id="searchOverlay">
-    <div class="search-box">
-      <div class="search-input-row"><span>⌕</span><input id="searchInput" placeholder="Search docs..." autocomplete="off"><kbd>ESC</kbd></div>
-      <div id="searchResults"></div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
