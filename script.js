@@ -1,5 +1,7 @@
-const pages=[...document.querySelectorAll('.page')];
-const links=[...document.querySelectorAll('nav a')];
+const pages=[...
+document.querySelectorAll('.page')];
+const links=[...
+document.querySelectorAll('nav a')];
 const searchBtn=document.getElementById('searchBtn');
 const overlay=document.getElementById('searchOverlay');
 const closeSearch=document.getElementById('closeSearch');
@@ -14,8 +16,10 @@ function show(route){
   links.forEach(a=>a.classList.toggle('active',a.dataset.page===page.dataset.route));
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
 window.addEventListener('hashchange',()=>show(location.hash));
 show(location.hash);
+
 
 document.querySelectorAll('.copy').forEach(btn=>{
   btn.addEventListener('click',()=>{
@@ -27,6 +31,7 @@ document.querySelectorAll('.copy').forEach(btn=>{
   });
 });
 
+
 function openSearch(){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');input.focus();renderResults('')}
 function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true')}
 searchBtn.onclick=openSearch; closeSearch.onclick=close;
@@ -35,6 +40,7 @@ document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch()}
   if(e.key==='Escape')close();
 });
+
 const index=pages.map(p=>({route:p.dataset.route,title:p.querySelector('h1')?.textContent||p.dataset.route,text:p.innerText}));
 function renderResults(q){
   const needle=q.trim().toLowerCase();
@@ -43,6 +49,7 @@ function renderResults(q){
 }
 input.addEventListener('input',()=>renderResults(input.value));
 results.addEventListener('click',()=>close());
+
 
 if(localStorage.getItem('ff-wiki-theme')==='light') document.body.classList.add('light');
 themeBtn.onclick=()=>{
