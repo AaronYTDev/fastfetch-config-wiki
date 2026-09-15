@@ -1,1221 +1,589 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#07080d">
-  <meta name="description" content="Official documentation for fastfetch-config, the terminal UI for managing Fastfetch configurations.">
-  <title>fastfetch-config wiki</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fastfetch-config Wiki</title>
 <style>
-/* FASTFETCH-CONFIG WIKI
-   Designed like the person responsible for typography has a personal feud
-   with the person responsible for terminals.
-*/
-
-:root {
-  --ink: #f3f0e8;
-  --paper: #0b0b0a;
-  --paper-2: #11110f;
-  --paper-3: #181714;
-  --acid: #d9ff43;
-  --cyan: #55e8ff;
-  --pink: #ff5caa;
-  --orange: #ff9d3d;
-  --violet: #a98cff;
-  --dim: #8e8a80;
-  --line: rgba(243,240,232,.14);
-  --line-strong: rgba(217,255,67,.45);
-  --mono: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
-  --sans: Inter, "Arial Narrow", Arial, sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  background: var(--paper);
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--ink);
-  background:
-    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
-    var(--paper);
-  background-size: 28px 28px;
-  font-family: var(--sans);
-  line-height: 1.65;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: "FASTFETCH_CONFIG // DOCUMENTATION // V1.6.8";
-  position: fixed;
-  z-index: 200;
-  right: 16px;
-  bottom: 12px;
-  pointer-events: none;
-  color: rgba(217,255,67,.18);
-  font: 9px var(--mono);
-  letter-spacing: .12em;
-  transform: rotate(-90deg) translateX(100%);
-  transform-origin: right bottom;
-}
-
-::selection {
-  color: #000;
-  background: var(--acid);
-}
-
-a {
-  color: inherit;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-/* The top bar is intentionally slightly wrong. */
-
-.topbar {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 66px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(11,11,10,.92);
-  backdrop-filter: blur(14px);
-}
-
-.topbar::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: -3px;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--acid) 23%, var(--pink) 54%, transparent 87%);
-  opacity: .8;
-}
-
-.topbar-inner {
-  width: min(100% - 28px, 1380px);
-  height: 100%;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 280px;
-  text-decoration: none;
-}
-
-.brand-mark {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  color: #000;
-  background: var(--acid);
-  border-radius: 3px;
-  transform: rotate(-4deg);
-  font: 800 12px var(--mono);
-  box-shadow: 5px 5px 0 var(--pink);
-}
-
-.brand span:last-child {
-  font: 800 13px var(--mono);
-  letter-spacing: -.04em;
-}
-
-.top-actions {
-  margin-left: auto;
-  display: flex;
-  gap: 7px;
-}
-
-.icon-btn,
-.menu-btn {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  color: var(--dim);
-  background: var(--paper-2);
-  cursor: pointer;
-}
-
-.icon-btn:hover,
-.menu-btn:hover {
-  color: var(--acid);
-  border-color: var(--acid);
-  transform: rotate(2deg);
-}
-
-.menu-btn {
-  display: none;
-}
-
-/* Layout */
-
-.layout {
-  width: min(100% - 28px, 1380px);
-  margin: 0 auto;
-  padding-top: 95px;
-  display: grid;
-  grid-template-columns: 225px minmax(0, 1fr);
-  gap: 48px;
-}
-
-.sidebar {
-  position: sticky;
-  top: 88px;
-  align-self: start;
-  max-height: calc(100vh - 110px);
-  overflow-y: auto;
-  padding-bottom: 30px;
-}
-
-.sidebar-title {
-  margin: 0 0 9px;
-  color: var(--acid);
-  font: 800 9px var(--mono);
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-
-.nav {
-  display: grid;
-  gap: 2px;
-}
-
-.nav a {
-  position: relative;
-  padding: 7px 9px 7px 14px;
-  color: #8f8c83;
-  border-left: 1px solid transparent;
-  text-decoration: none;
-  font: 12px var(--mono);
-  transition: .15s ease;
-}
-
-.nav a::before {
-  content: "·";
-  position: absolute;
-  left: 3px;
-  color: #44423d;
-}
-
-.nav a:hover {
-  color: var(--ink);
-  background: rgba(255,255,255,.025);
-}
-
-.nav a.active {
-  color: var(--acid);
-  border-left-color: var(--acid);
-  background: linear-gradient(90deg, rgba(217,255,67,.09), transparent);
-}
-
-.nav a.active::before {
-  content: ">";
-  color: var(--acid);
-}
-
-.nav-group {
-  margin-top: 26px;
-}
-
-.main {
-  min-width: 0;
-  padding-bottom: 110px;
-}
-
-.page {
-  display: none;
-  animation: cutIn .2s steps(2, end) both;
-}
-
-.page.active {
-  display: block;
-}
-
-@keyframes cutIn {
-  from { opacity: 0; transform: translate(8px, 0); }
-  to { opacity: 1; transform: none; }
-}
-
-/* Typography */
-
-.eyebrow {
-  display: inline-block;
-  margin-bottom: 15px;
-  color: var(--pink);
-  font: 800 10px var(--mono);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: "[";
-  color: var(--acid);
-}
-
-.eyebrow::after {
-  content: "]";
-  color: var(--acid);
-}
-
-h1,
-h2,
-h3 {
-  color: var(--ink);
-  line-height: .98;
-  letter-spacing: -.055em;
-}
-
-h1 {
-  max-width: 950px;
-  margin: 0 0 22px;
-  font-size: clamp(50px, 8vw, 104px);
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-h1::after {
-  content: " /";
-  color: var(--acid);
-}
-
-h2 {
-  margin: 64px 0 17px;
-  font-size: clamp(30px, 4vw, 54px);
-  text-transform: uppercase;
-}
-
-h2::before {
-  content: "// ";
-  color: var(--pink);
-  font: 500 .55em var(--mono);
-}
-
-h3 {
-  margin: 0 0 9px;
-  font-size: 19px;
-}
-
-p {
-  max-width: 780px;
-  color: #aaa69c;
-}
-
-.lead {
-  max-width: 760px;
-  margin: 0 0 28px;
-  color: #cbc7bd;
-  font-size: 18px;
-}
-
-.small {
-  font-size: 12px;
-}
-
-.muted {
-  color: var(--dim);
-}
-
-/* Hero */
-
-.hero {
-  position: relative;
-  min-height: 475px;
-  margin-bottom: 30px;
-  padding: clamp(25px, 5vw, 58px);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(115deg, rgba(217,255,67,.045), transparent 42%),
-    repeating-linear-gradient(-6deg, transparent 0 25px, rgba(255,255,255,.018) 26px 27px),
-    var(--paper-2);
-}
-
-.hero::before {
-  content: "DO NOT MAKE IT PRETTY";
-  position: absolute;
-  right: -30px;
-  top: 80px;
-  color: rgba(255,92,170,.055);
-  font: 900 clamp(60px, 13vw, 180px)/.8 var(--sans);
-  letter-spacing: -.09em;
-  transform: rotate(-8deg);
-  white-space: nowrap;
-}
-
-.hero::after {
-  content: "TERMINAL";
-  position: absolute;
-  right: 20px;
-  bottom: 17px;
-  color: var(--acid);
-  font: 700 9px var(--mono);
-  letter-spacing: .22em;
-  opacity: .7;
-}
-
-.hero-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 370px;
-  gap: 40px;
-  align-items: end;
-}
-
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.badge {
-  padding: 5px 8px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  color: #aaa69c;
-  background: var(--paper-3);
-  font: 10px var(--mono);
-  text-transform: uppercase;
-}
-
-.badge.accent {
-  color: #000;
-  border-color: var(--acid);
-  background: var(--acid);
-}
-
-.terminal-preview {
-  border: 1px solid #3b3932;
-  background: #070706;
-  box-shadow: 12px 12px 0 rgba(255,92,170,.13);
-  transform: rotate(.8deg);
-}
-
-.terminal-bar {
-  height: 31px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 10px;
-  border-bottom: 1px solid #24231f;
-  background: #11110f;
-}
-
-.terminal-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4c4a43;
-}
-
-.terminal-title {
-  margin-left: 4px;
-  color: #5f5c54;
-  font: 9px var(--mono);
-}
-
-.terminal-preview pre {
-  min-height: 245px;
-  margin: 0;
-  padding: 17px;
-  overflow: auto;
-  color: #b9b6ad;
-  font: 11px/1.65 var(--mono);
-}
-
-.prompt {
-  color: var(--acid);
-}
-
-/* Cards */
-
-.grid {
-  display: grid;
-  gap: 12px;
-}
-
-.grid-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.card {
-  position: relative;
-  min-width: 0;
-  padding: 21px;
-  border: 1px solid var(--line);
-  background: var(--paper-2);
-}
-
-.card:nth-child(3n + 1) {
-  border-top: 2px solid var(--acid);
-}
-
-.card:nth-child(3n + 2) {
-  border-top: 2px solid var(--pink);
-}
-
-.card:nth-child(3n) {
-  border-top: 2px solid var(--cyan);
-}
-
-.card:hover {
-  background: #151512;
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 rgba(217,255,67,.08);
-}
-
-.card-icon {
-  width: 35px;
-  height: 35px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 16px;
-  border: 1px solid var(--line);
-  color: var(--acid);
-  background: #0a0a09;
-  font: 13px var(--mono);
-}
-
-/* Code */
-
-.code-wrap {
-  margin: 19px 0;
-  border: 1px solid #39372f;
-  background: #060605;
-}
-
-.code-label {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 11px;
-  border-bottom: 1px solid #27261f;
-  color: #656158;
-  background: #11110f;
-  font: 9px var(--mono);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.copy-btn {
-  padding: 3px 7px;
-  border: 1px solid #34322c;
-  border-radius: 2px;
-  color: #8e8a80;
-  background: #171612;
-  cursor: pointer;
-  font: 9px var(--mono);
-}
-
-.copy-btn:hover {
-  color: #000;
-  border-color: var(--acid);
-  background: var(--acid);
-}
-
-pre.code {
-  margin: 0;
-  padding: 17px;
-  overflow-x: auto;
-  color: #c7c3b9;
-  font: 12px/1.7 var(--mono);
-}
-
-code.inline {
-  padding: 2px 5px;
-  border: 1px solid rgba(217,255,67,.22);
-  color: var(--acid);
-  background: rgba(217,255,67,.045);
-  font: 12px var(--mono);
-}
-
-/* Tables */
-
-.table-wrap {
-  margin: 20px 0;
-  overflow-x: auto;
-  border: 1px solid var(--line);
-}
-
-table {
-  width: 100%;
-  min-width: 600px;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-}
-
-th {
-  color: var(--acid);
-  background: #141411;
-  font: 9px var(--mono);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-td {
-  color: #aaa69c;
-  font: 12px/1.55 var(--mono);
-}
-
-tr:last-child td {
-  border-bottom: 0;
-}
-
-.list {
-  padding-left: 21px;
-  color: #aaa69c;
-}
-
-.list li {
-  margin: 8px 0;
-}
-
-.check-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.check-list li {
-  margin: 10px 0;
-  padding-left: 23px;
-  color: #aaa69c;
-}
-
-.check-list li::before {
-  content: "[x]";
-  position: absolute;
-  margin-left: -23px;
-  color: var(--acid);
-  font: 10px var(--mono);
-}
-
-/* Buttons */
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.btn {
-  min-height: 39px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 13px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  color: #d1cdc3;
-  background: #141411;
-  text-decoration: none;
-  font: 10px var(--mono);
-  text-transform: uppercase;
-  transition: .15s ease;
-}
-
-.btn:hover {
-  color: #000;
-  border-color: var(--acid);
-  background: var(--acid);
-  transform: translate(2px, -2px);
-}
-
-.btn.primary {
-  color: #000;
-  border-color: var(--acid);
-  background: var(--acid);
-}
-
-/* Search */
-
-.search-overlay {
-  position: fixed;
-  z-index: 300;
-  inset: 0;
-  display: none;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 100px 18px 20px;
-  background: rgba(0,0,0,.8);
-  backdrop-filter: blur(5px);
-}
-
-.search-overlay.open {
-  display: flex;
-}
-
-.search-box {
-  width: min(750px, 100%);
-  border: 1px solid var(--acid);
-  background: #0d0d0b;
-  box-shadow: 12px 12px 0 var(--pink);
-}
-
-.search-input {
-  width: 100%;
-  padding: 17px;
-  border: 0;
-  outline: 0;
-  color: var(--acid);
-  background: transparent;
-  font: 14px var(--mono);
-}
-
-.search-input::placeholder {
-  color: #555249;
-}
-
-.search-results {
-  max-height: 55vh;
-  overflow-y: auto;
-  border-top: 1px solid var(--line);
-}
-
-.search-result {
-  display: block;
-  padding: 13px 17px;
-  border-bottom: 1px solid var(--line);
-  color: #8e8a80;
-  text-decoration: none;
-  font: 11px/1.5 var(--mono);
-}
-
-.search-result:hover {
-  color: var(--ink);
-  background: rgba(217,255,67,.05);
-}
-
-.search-result strong {
-  display: block;
-  margin-bottom: 3px;
-  color: var(--acid);
-}
-
-/* Footer */
-
-.footer {
-  margin-top: 72px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-  color: #555249;
-  font: 9px/1.7 var(--mono);
-  text-transform: uppercase;
-}
-
-/* Mobile */
-
-@media (max-width: 950px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 0;
+:root{
+  --bg:#0d1117;
+  --panel:#161b22;
+  --panel-2:#0f141a;
+  --border:#30363d;
+  --text:#e6edf3;
+  --muted:#8b949e;
+  --link:#58a6ff;
+  --accent:#a371f7;
+  --code:#0b0f14;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input{font:inherit}
+.topbar{
+  height:64px;
+  border-bottom:1px solid var(--border);
+  background:var(--panel);
+  display:flex;
+  align-items:center;
+}
+.topbar-inner{
+  width:min(1200px,calc(100% - 48px));
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+.brand{
+  color:var(--text);
+  font-weight:650;
+  font-size:16px;
+  white-space:nowrap;
+}
+.brand:hover{text-decoration:none}
+.search{
+  width:300px;
+  max-width:100%;
+  margin-left:auto;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--muted);
+  padding:8px 12px;
+  cursor:pointer;
+  text-align:left;
+}
+.search:hover{border-color:#8b949e}
+.layout{
+  width:min(1200px,calc(100% - 48px));
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:56px;
+}
+.sidebar{
+  padding:40px 0;
+  position:sticky;
+  top:0;
+  height:calc(100vh - 64px);
+  overflow:auto;
+}
+.nav-title{
+  color:var(--text);
+  font-size:13px;
+  font-weight:650;
+  margin:0 0 10px;
+}
+.nav{
+  display:grid;
+  gap:2px;
+}
+.nav button{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:7px 10px;
+  border-radius:6px;
+  text-align:left;
+  cursor:pointer;
+}
+.nav button:hover{background:#21262d;color:var(--text)}
+.nav button.active{background:#21262d;color:var(--text);font-weight:600}
+.main{
+  min-width:0;
+  padding:52px 0 80px;
+  max-width:820px;
+}
+.page{display:none}
+.page.active{display:block}
+h1{
+  margin:0 0 14px;
+  font-size:34px;
+  line-height:1.2;
+  letter-spacing:-.5px;
+}
+h2{
+  margin:48px 0 14px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  font-size:22px;
+  line-height:1.3;
+}
+h3{margin:28px 0 8px;font-size:17px}
+p{margin:0 0 16px}
+.lead{font-size:17px;color:var(--muted);margin-bottom:28px}
+.notice{
+  border-left:3px solid var(--accent);
+  background:var(--panel);
+  padding:14px 16px;
+  margin:24px 0;
+  border-radius:4px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  margin:22px 0;
+}
+.card{
+  border:1px solid var(--border);
+  background:var(--panel);
+  border-radius:6px;
+  padding:18px;
+  min-width:0;
+}
+.card h3{margin:0 0 6px}
+.card p:last-child{margin-bottom:0}
+.muted{color:var(--muted)}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+  font-size:.9em;
+}
+:not(pre)>code{
+  background:#21262d;
+  border-radius:4px;
+  padding:2px 5px;
+  overflow-wrap:anywhere;
+}
+.code{
+  position:relative;
+  margin:16px 0 22px;
+  background:var(--code);
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+pre{
+  margin:0;
+  padding:16px;
+  overflow:auto;
+  white-space:pre;
+  color:#e6edf3;
+}
+.copy{
+  position:absolute;
+  top:8px;
+  right:8px;
+  border:1px solid var(--border);
+  background:#161b22;
+  color:var(--muted);
+  border-radius:5px;
+  padding:4px 8px;
+  cursor:pointer;
+}
+.copy:hover{color:var(--text)}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:18px 0;
+}
+.table-wrap{overflow:auto;max-width:100%;border:1px solid var(--border);border-radius:6px}
+.table-wrap table{margin:0;min-width:560px}
+th,td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  vertical-align:top;
+}
+th{background:var(--panel);font-weight:600}
+tr:last-child td{border-bottom:0}
+ul,ol{padding-left:24px}
+li{margin:5px 0}
+.footer{
+  margin-top:64px;
+  padding-top:20px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:13px;
+}
+.search-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  padding:90px 20px;
+  z-index:10;
+}
+.search-overlay.open{display:flex}
+.search-box{
+  width:min(620px,100%);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 16px 48px rgba(0,0,0,.35);
+}
+.search-input{
+  width:100%;
+  border:0;
+  border-bottom:1px solid var(--border);
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  padding:14px 16px;
+}
+.results{max-height:400px;overflow:auto}
+.result{
+  display:block;
+  padding:12px 16px;
+  color:var(--text);
+  border-bottom:1px solid var(--border);
+}
+.result:last-child{border-bottom:0}
+.result small{display:block;color:var(--muted);margin-top:2px}
+.menu{display:none}
+@media(max-width:800px){
+  .topbar-inner,.layout{width:min(100% - 28px,1200px)}
+  .search{width:auto;flex:1}
+  .layout{display:block}
+  .sidebar{
+    display:none;
+    position:static;
+    height:auto;
+    padding:18px 0 0;
   }
-
-  .sidebar {
-    position: fixed;
-    z-index: 90;
-    top: 66px;
-    bottom: 0;
-    left: 0;
-    width: min(300px, 84vw);
-    max-height: none;
-    padding: 25px 20px;
-    border-right: 1px solid var(--acid);
-    background: #0b0b0a;
-    transform: translateX(-105%);
-    transition: transform .2s steps(3, end);
+  .sidebar.open{display:block}
+  .menu{display:block}
+  .main{padding:34px 0 60px}
+  .grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .topbar{height:auto;min-height:64px}
+  .topbar-inner{padding:10px 0;flex-wrap:wrap;gap:10px}
+  .brand{flex:1}
+  .search{order:3;flex-basis:100%}
+  h1{font-size:29px}
+}
+/* Small, restrained motion */
+@media (prefers-reduced-motion: no-preference){
+  .main{animation:page-in .22s ease-out both}
+  .page.active h1{animation:heading-in .2s ease-out both}
+  .card,.notice,.code,.table-wrap{
+    transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
   }
-
-  body.nav-open .sidebar {
-    transform: translateX(0);
+  .card:hover{
+    border-color:#484f58;
+    box-shadow:0 6px 20px rgba(0,0,0,.14);
+    transform:translateY(-1px);
   }
-
-  .menu-btn {
-    display: grid;
+  .notice:hover{
+    border-color:var(--accent);
   }
-
-  .hero-grid {
-    grid-template-columns: 1fr;
+  .code:hover,.table-wrap:hover{
+    border-color:#484f58;
   }
-
-  .grid-3 {
-    grid-template-columns: 1fr;
+  .nav button{
+    transition:background-color .14s ease,color .14s ease,transform .14s ease;
+  }
+  .nav button:hover{
+    transform:translateX(2px);
+  }
+  .search{
+    transition:border-color .15s ease,background-color .15s ease;
+  }
+  .search:focus-visible{
+    outline:2px solid rgba(163,113,247,.55);
+    outline-offset:2px;
+  }
+  .copy{
+    transition:background-color .14s ease,color .14s ease,border-color .14s ease;
+  }
+  .copy:active{
+    transform:scale(.96);
+  }
+  .search-overlay{
+    animation:overlay-in .16s ease-out both;
+  }
+  .search-box{
+    animation:search-in .18s ease-out both;
   }
 }
-
-@media (max-width: 650px) {
-  .brand {
-    min-width: 0;
-  }
-
-  .brand span:last-child {
-    max-width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .layout {
-    width: min(100% - 18px, 1380px);
-    padding-top: 86px;
-  }
-
-  .hero {
-    min-height: 0;
-    padding: 25px 19px 30px;
-  }
-
-  h1 {
-    font-size: 48px;
-  }
-
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  body::before {
-    display: none;
-  }
+@keyframes page-in{
+  from{opacity:.72;transform:translateY(5px)}
+  to{opacity:1;transform:none}
 }
+@keyframes heading-in{
+  from{opacity:.75;transform:translateY(3px)}
+  to{opacity:1;transform:none}
+}
+@keyframes overlay-in{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes search-in{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:none}
+}
+
 </style>
-
 </head>
 <body>
-<div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="noise"></div>
-
 <header class="topbar">
-  <a class="brand" href="#home" aria-label="fastfetch-config home">
-    <span class="brand-mark">ff</span>
-    <span><b>fastfetch-config</b><small>community wiki</small></span>
-  </a>
-  <div class="top-actions">
-    <button id="searchBtn" class="icon-btn" title="Search (Ctrl K)">⌕ <span>Search</span></button>
-    <button id="themeBtn" class="icon-btn" title="Toggle theme">◐</button>
-    <a class="github-btn" href="https://github.com/AaronYTDev/fastfetch-config" target="_blank" rel="noreferrer">GitHub ↗</a>
+  <div class="topbar-inner">
+    <button class="menu" id="menu" aria-label="Open navigation">☰</button>
+    <a class="brand" href="#home">fastfetch-config</a>
+    <button class="search" id="searchBtn">Search wiki…</button>
   </div>
 </header>
 
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <div class="side-label">DOCUMENTATION</div>
-    <nav>
-      <a href="#home" data-page="home">Overview</a>
-      <a href="#install" data-page="install">Installation</a>
-      <a href="#quickstart" data-page="quickstart">Quick start</a>
-      <a href="#tui" data-page="tui">Using the TUI</a>
-      <a href="#config" data-page="config">Configuration</a>
-      <a href="#modules" data-page="modules">Modules</a>
-      <a href="#logos" data-page="logos">Logos & images</a>
-      <a href="#colors" data-page="colors">Colors</a>
-      <a href="#backups" data-page="backups">Backups</a>
-      <a href="#troubleshooting" data-page="troubleshooting">Troubleshooting</a>
-      <a href="#reference" data-page="reference">Command reference</a>
-      <a href="#faq" data-page="faq">FAQ</a>
+    <div class="nav-title">Wiki</div>
+    <nav class="nav">
+      <button data-page="home">Home</button>
+      <button data-page="installation">Installation</button>
+      <button data-page="usage">Usage</button>
+      <button data-page="configuration">Configuration</button>
+      <button data-page="logos">Logos</button>
+      <button data-page="backups">Backups</button>
+      <button data-page="troubleshooting">Troubleshooting</button>
+      <button data-page="development">Development</button>
     </nav>
-    <div class="side-card">
-      <span class="status-dot"></span>
-      <div><b>V1.6.8</b><small>documented project version</small></div>
-    </div>
   </aside>
 
-  <main id="app">
-    <section class="page active" data-route="home">
-      <div class="hero">
-        <div class="eyebrow"><span></span> FASTFETCH TOOLING</div>
-        <h1>A better way to<br><em>shape your terminal.</em></h1>
-        <p class="hero-copy">A practical, visual wiki for <b>fastfetch-config</b>, a TUI that helps you manage Fastfetch without living inside a text editor every time you want to move a module three pixels to the left.</p>
-        <div class="hero-actions">
-          <a class="primary" href="#quickstart">Get started <span>→</span></a>
-          <a class="secondary" href="#config">Explore configuration</a>
+  <main class="main">
+    <section class="page" id="home">
+      <h1>fastfetch-config Wiki</h1>
+      <p class="lead">A TUI tool for managing Fastfetch configuration.</p>
+
+      <div class="notice">
+        <strong>Project status:</strong> This project is experimental. It works best on Arch-based Linux distributions, and macOS support is very experimental.
+      </div>
+
+      <p>
+        <code>fastfetch-config</code> provides a terminal interface for working with your Fastfetch configuration, including configuration files and logos.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Install</h3>
+          <p>Run the installer and let it set up the required dependencies and configuration directory.</p>
+        </div>
+        <div class="card">
+          <h3>Configure</h3>
+          <p>Use the TUI to manage the Fastfetch setup stored in your config directory.</p>
         </div>
       </div>
 
-      <div class="terminal hero-terminal">
-        <div class="term-head"><span class="lights"><i></i><i></i><i></i></span><span>~/terminal</span><span>fastfetch</span></div>
-        <pre><span class="muted">$</span> fastfetch
-<span class="accent">        /\</span>       <b>user@host</b>
-<span class="accent">       /  \</span>      <span class="key">OS</span>       Arch Linux
-<span class="accent">      / /\ \</span>     <span class="key">Kernel</span>   6.x
-<span class="accent">     / ____ \</span>    <span class="key">Uptime</span>   3h 42m
-<span class="accent">    /_/    \_\</span>   <span class="key">CPU</span>      8 cores
-                    <span class="key">Memory</span>   7.2 GiB / 32 GiB</pre>
-      </div>
+      <h2>Project links</h2>
+      <ul>
+        <li><a href="https://github.com/AaronYTDev/fastfetch-config" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://www.mintlify.com/aAronytdev/fastfetch-config" target="_blank" rel="noopener">Official wiki</a></li>
+      </ul>
 
-      <div class="section-head"><span>WHY THIS EXISTS</span><h2>Fastfetch, minus the config-file archaeology.</h2></div>
-      <div class="grid three">
-        <article class="card feature"><div class="card-icon">⌘</div><h3>Terminal-first</h3><p>Manage your Fastfetch setup from a purpose-built TUI instead of manually hunting through JSONC whenever inspiration strikes.</p></article>
-        <article class="card feature"><div class="card-icon">✦</div><h3>Highly customizable</h3><p>Modules, logos, colors, layout and display details can be shaped around the setup you actually use.</p></article>
-        <article class="card feature"><div class="card-icon">↺</div><h3>Backups included</h3><p>The tool keeps configuration backups, giving experimentation a slightly less terrifying failure mode.</p></article>
-      </div>
-
-      <div class="callout warning"><b>Experimental software:</b> the project itself describes macOS support as very experimental and says it is not confirmed to work on every operating system. Linux, especially Arch-based systems, is the primary target.</div>
-
-      <div class="section-head"><span>PROJECT</span><h2>At a glance</h2></div>
-      <div class="facts">
-        <div><small>PROJECT</small><b>fastfetch-config</b></div>
-        <div><small>VERSION</small><b>V1.6.8</b></div>
-        <div><small>AUTHORS</small><b>aaronYTDev + Madrinth</b></div>
-        <div><small>CONFIG</small><b>~/.config/fastfetch</b></div>
-      </div>
+      <div class="footer">Created by aaronYTDev &amp; Madrinth.</div>
     </section>
 
-    <section class="page" data-route="install">
-      <div class="page-title"><span class="eyebrow"><span></span> SETUP</span><h1>Installation</h1><p>Get Fastfetch and fastfetch-config installed, then let the TUI take over the repetitive bits.</p></div>
-      <div class="doc-grid">
-        <div>
-          <h2>Stable install</h2>
-          <p>The project provides a curl-based installer for the stable release.</p>
-          <div class="code"><button class="copy">copy</button><pre>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash</pre></div>
-          <h2>Testing build</h2>
-          <p>Use the testing installer when you intentionally want the less boring version.</p>
-          <div class="code"><button class="copy">copy</button><pre>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff-testing.sh | bash</pre></div>
-          <div class="callout danger"><b>Read the script first if you're cautious.</b> Piping a remote shell script straight into Bash is convenient, but downloading it, reviewing it, then running it is the more defensible habit.</div>
-        </div>
-        <aside class="toc-card"><b>Installer checks</b><ul><li>Detects the distro</li><li>Checks <code>jq</code></li><li>Checks <code>chafa</code></li><li>Checks ImageMagick <code>convert</code></li><li>Creates the Fastfetch config area</li><li>Installs the <code>fastfetch-config</code> command</li></ul></aside>
-      </div>
-      <h2>Supported package-manager families</h2>
-      <div class="platforms">
-        <span>Arch / CachyOS / EndeavourOS</span><span>Ubuntu / Debian / Mint</span><span>Fedora / RHEL</span><span>openSUSE</span><span>Alpine</span><span>Void</span><span>Gentoo</span>
-      </div>
-      <p class="muted-note">Unknown distributions are not automatically supported by the installer. In that case, install the required dependencies manually.</p>
+    <section class="page" id="installation">
+      <h1>Installation</h1>
+      <p class="lead">The project includes stable and testing installers.</p>
+
+      <h2>Stable</h2>
+      <p>Run the following command:</p>
+      <div class="code"><button class="copy">Copy</button><pre><code>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff.sh | bash</code></pre></div>
+
+      <h2>Testing version</h2>
+      <p>For the testing installer:</p>
+      <div class="code"><button class="copy">Copy</button><pre><code>curl -fsSL https://raw.githubusercontent.com/AaronYTDev/fastfetch-config/main/install-ff-testing.sh | bash</code></pre></div>
+
+      <h2>Dependencies</h2>
+      <p>The installer checks for these dependencies and can install them when a supported package manager is available:</p>
+      <ul>
+        <li><code>jq</code></li>
+        <li><code>chafa</code></li>
+        <li>ImageMagick, using <code>convert</code></li>
+      </ul>
+
+      <p class="muted">Supported package managers include pacman, apt, dnf, zypper, apk, xbps and emerge. Unknown distributions may require manual dependency installation.</p>
     </section>
 
-    <section class="page" data-route="quickstart">
-      <div class="page-title"><span class="eyebrow"><span></span> FIRST RUN</span><h1>Quick start</h1><p>From zero to a customized terminal in a few deliberate steps.</p></div>
-      <div class="steps">
-        <article><b>01</b><div><h3>Install Fastfetch</h3><p>Fastfetch itself must be available on your system before this project can manage its configuration.</p><div class="code"><button class="copy">copy</button><pre>fastfetch --version</pre></div></div></article>
-        <article><b>02</b><div><h3>Install fastfetch-config</h3><p>Run the stable installer, then make sure the command is on your PATH.</p><div class="code"><button class="copy">copy</button><pre>fastfetch-config</pre></div></div></article>
-        <article><b>03</b><div><h3>Make a change</h3><p>Use the TUI to adjust modules, colors or logos. The tool writes your Fastfetch configuration for you.</p></div></article>
-        <article><b>04</b><div><h3>Preview it</h3><p>Run Fastfetch directly and inspect the result. Terminal configuration is best judged where it actually lives: in the terminal.</p><div class="code"><button class="copy">copy</button><pre>fastfetch</pre></div></div></article>
+    <section class="page" id="usage">
+      <h1>Usage</h1>
+      <p class="lead">The tool is designed to be used from the terminal.</p>
+
+      <h2>Starting the tool</h2>
+      <p>After installation, run the <code>fastfetch-config</code> command from your terminal.</p>
+
+      <div class="notice">
+        The exact available options can change while the project is being developed. Treat the repository as the source of truth for current behavior.
       </div>
-      <div class="callout tip"><b>Tip:</b> Keep a known-good config before doing a large redesign. Your future self is a separate person who deserves basic kindness.</div>
+
+      <h2>Configuration directory</h2>
+      <p>The project uses the standard Fastfetch configuration location:</p>
+      <div class="code"><pre><code>${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch</code></pre></div>
     </section>
 
-    <section class="page" data-route="tui">
-      <div class="page-title"><span class="eyebrow"><span></span> INTERFACE</span><h1>Using the TUI</h1><p>The terminal UI is the main reason this project exists. It wraps the config in a menu-driven workflow.</p></div>
-      <div class="mock-ui">
-        <div class="mock-title">fastfetch-config <span>V1.6.8</span></div>
-        <div class="mock-body"><aside><b>CONFIG</b><span class="selected">› Modules</span><span>› Logo</span><span>› Colors</span><span>› Display</span><span>› Backups</span></aside><div class="mock-main"><small>MODULES</small><h3>Choose what Fastfetch displays</h3><label>✓ OS</label><label>✓ Host</label><label>✓ Kernel</label><label>✓ CPU</label><label>✓ Memory</label><label>□ Battery</label></div></div>
-      </div>
-      <div class="grid two">
-        <article class="card"><h3>What it manages</h3><ul class="clean"><li>Fastfetch module selection</li><li>Logo settings and custom logo files</li><li>Named colors</li><li>Configuration backups</li><li>JSONC configuration values</li></ul></article>
-        <article class="card"><h3>Where it lives</h3><p>The installer uses:</p><div class="code"><pre>$XDG_CONFIG_HOME/fastfetch</pre></div><p>When <code>XDG_CONFIG_HOME</code> is unset, that normally resolves to <code>~/.config/fastfetch</code>.</p></article>
-      </div>
+    <section class="page" id="configuration">
+      <h1>Configuration</h1>
+      <p class="lead">Fastfetch configuration files are stored in the project's configuration directory.</p>
+
+      <h2>Config file</h2>
+      <div class="code"><pre><code>$CONFIG_DIR/config.jsonc</code></pre></div>
+
+      <p>The default configuration includes a logo section and modules such as the operating system, host, kernel, uptime, packages, shell, desktop environment, window manager, CPU, memory, swap, GPU, disk, locale, a break, and colors.</p>
+
+      <h2>Logo settings</h2>
+      <p>The default configuration uses an automatic logo source with right padding set to <code>4</code>.</p>
+
+      <h2>Colors</h2>
+      <p>The project contains a large internal color map with more than 120 named colors for configuration use.</p>
     </section>
 
-    <section class="page" data-route="config">
-      <div class="page-title"><span class="eyebrow"><span></span> CORE CONCEPT</span><h1>Configuration</h1><p>Fastfetch uses JSONC, JSON with comments. fastfetch-config edits that configuration rather than replacing Fastfetch itself.</p></div>
-      <h2>The basic shape</h2>
-      <div class="code large"><button class="copy">copy</button><pre>{
-  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
-  "logo": {
-    "type": "auto",
-    "source": "",
-    "padding": { "right": 4 }
-  },
-  "modules": [
-    "title",
-    "separator",
-    "os",
-    "host",
-    "kernel",
-    "uptime",
-    "packages",
-    "shell",
-    "de",
-    "wm",
-    "cpu",
-    "memory",
-    "gpu",
-    "disk",
-    "locale",
-    "break",
-    "colors"
-  ]
-}</pre></div>
-      <div class="grid two">
-        <article class="card"><h3><code>logo</code></h3><p>Controls how the Fastfetch logo is selected, rendered and padded.</p></article>
-        <article class="card"><h3><code>modules</code></h3><p>The ordered list of information Fastfetch prints. Order matters because it becomes the visual structure of your output.</p></article>
-      </div>
-      <h2>Useful Fastfetch commands</h2>
-      <div class="command-table">
-        <div><code>fastfetch --gen-config</code><span>Generate a minimal config.</span></div>
-        <div><code>fastfetch --gen-config-full</code><span>Generate a fuller config containing optional settings.</span></div>
-        <div><code>fastfetch --help</code><span>Show command-line help.</span></div>
-        <div><code>fastfetch -c all.jsonc</code><span>Try an example/all-modules configuration when available.</span></div>
-        <div><code>fastfetch -s cpu:memory --format json</code><span>Inspect module data in JSON form.</span></div>
-      </div>
-      <div class="callout tip"><b>Schema support:</b> adding a JSON schema URL to the configuration lets editors such as VS Code provide completion and validation.</div>
+    <section class="page" id="logos">
+      <h1>Logos</h1>
+      <p class="lead">Custom Fastfetch logos are kept in the project's logos directory.</p>
+
+      <h2>Location</h2>
+      <div class="code"><pre><code>$CONFIG_DIR/logos</code></pre></div>
+
+      <p>The directory is created below the main Fastfetch configuration directory. The installer and configuration tool use it when working with logo files.</p>
     </section>
 
-    <section class="page" data-route="modules">
-      <div class="page-title"><span class="eyebrow"><span></span> DISPLAY DATA</span><h1>Modules</h1><p>Modules are the individual pieces of system information that make up the output.</p></div>
-      <div class="module-grid">
-        <article><b>title</b><span>User + host title line</span></article><article><b>os</b><span>Operating system</span></article><article><b>host</b><span>Host / machine information</span></article><article><b>kernel</b><span>Kernel version</span></article>
-        <article><b>uptime</b><span>System uptime</span></article><article><b>packages</b><span>Package count</span></article><article><b>shell</b><span>Current shell</span></article><article><b>de</b><span>Desktop environment</span></article>
-        <article><b>wm</b><span>Window manager</span></article><article><b>cpu</b><span>Processor details</span></article><article><b>memory</b><span>Memory usage</span></article><article><b>swap</b><span>Swap usage</span></article>
-        <article><b>gpu</b><span>Graphics information</span></article><article><b>disk</b><span>Disk usage</span></article><article><b>locale</b><span>Locale information</span></article><article><b>colors</b><span>Terminal color palette</span></article>
-      </div>
-      <h2>Custom module objects</h2>
-      <p>Fastfetch also supports object-based module definitions, which are useful when you want to override labels, colors or formatting.</p>
-      <div class="code"><button class="copy">copy</button><pre>{
-  "type": "os",
-  "key": "OS",
-  "keyColor": "blue",
-  "format": "{name} {version}"
-}</pre></div>
-      <p class="muted-note">The exact options available vary by module. Use Fastfetch's module help, for example <code>fastfetch -h cpu-format</code>, when you need the supported format fields.</p>
+    <section class="page" id="backups">
+      <h1>Backups</h1>
+      <p class="lead">Backups are stored alongside the Fastfetch configuration.</p>
+
+      <h2>Location</h2>
+      <div class="code"><pre><code>$CONFIG_DIR/backups</code></pre></div>
+
+      <p>Keeping backups inside the configuration directory makes them easy to find without introducing another system-wide location.</p>
     </section>
 
-    <section class="page" data-route="logos">
-      <div class="page-title"><span class="eyebrow"><span></span> VISUALS</span><h1>Logos & images</h1><p>Fastfetch can use detected logos, built-in logos and file-based logos. The config tool also maintains a dedicated logos directory.</p></div>
-      <div class="grid two">
-        <article class="card"><h3>Auto detection</h3><p>Keep <code>"type": "auto"</code> when you want Fastfetch to choose a suitable logo automatically.</p></article>
-        <article class="card"><h3>Explicit source</h3><p>Set a source when you want a particular built-in logo or a custom file path.</p></article>
-        <article class="card"><h3>Custom files</h3><p>The project uses <code>~/.config/fastfetch/logos</code> as its logo storage directory.</p></article>
-        <article class="card"><h3>Image helpers</h3><p>The installer checks for <code>chafa</code> and ImageMagick's <code>convert</code>, which are used by the project's image-related workflow.</p></article>
-      </div>
-      <h2>Handy Fastfetch logo commands</h2>
-      <div class="command-table">
-        <div><code>fastfetch --list-logos</code><span>List available logos.</span></div>
-        <div><code>fastfetch --print-logos</code><span>Print available logo information.</span></div>
-      </div>
+    <section class="page" id="troubleshooting">
+      <h1>Troubleshooting</h1>
+      <p class="lead">A few things to check when the tool does not behave as expected.</p>
+
+      <h2>Check your platform</h2>
+      <p>The project is not confirmed to work on every operating system. Arch Linux and Arch-based distributions are the best-supported environment. macOS support is currently very experimental.</p>
+
+      <h2>Check dependencies</h2>
+      <p>Make sure <code>jq</code>, <code>chafa</code>, and ImageMagick are available if the installer could not provide them automatically.</p>
+
+      <h2>Check the config directory</h2>
+      <p>Verify that your Fastfetch configuration is under:</p>
+      <div class="code"><pre><code>${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch</code></pre></div>
+
+      <h2>Still broken?</h2>
+      <p>Check the project's GitHub issues and the current repository files. This project is actively experimental, so documentation can occasionally lag behind the code. Humanity survives another day.</p>
     </section>
 
-    <section class="page" data-route="colors">
-      <div class="page-title"><span class="eyebrow"><span></span> PALETTE</span><h1>Colors</h1><p>fastfetch-config ships with a large named color map so you can work with readable names instead of remembering hexadecimal values for the rest of human history.</p></div>
-      <div class="swatches">
-        <span style="--c:#ff4d67">red</span><span style="--c:#ff8a3d">orange</span><span style="--c:#ffd43b">gold</span><span style="--c:#54d67a">green</span><span style="--c:#36d9d0">cyan</span><span style="--c:#4f8cff">blue</span><span style="--c:#9a6cff">purple</span><span style="--c:#f05fc0">pink</span>
-      </div>
-      <p>The project contains 120+ named colors. Examples include <code>red</code>, <code>crimson</code>, <code>gold</code>, <code>emerald</code>, <code>cyan</code>, <code>royalblue</code>, <code>indigo</code>, <code>purple</code>, <code>pink</code>, <code>silver</code>, <code>white</code> and <code>black</code>.</p>
-      <div class="callout tip"><b>Practical rule:</b> use high-contrast key colors and let the logo carry the visual personality. Terminal output becomes unreadable surprisingly quickly when every line is trying to be the main character.</div>
-    </section>
+    <section class="page" id="development">
+      <h1>Development</h1>
+      <p class="lead">fastfetch-config is an experimental project maintained by aaronYTDev and Madrinth.</p>
 
-    <section class="page" data-route="backups">
-      <div class="page-title"><span class="eyebrow"><span></span> SAFETY NET</span><h1>Backups</h1><p>The project keeps backups inside the Fastfetch configuration area so you can experiment without treating every edit like a one-way door.</p></div>
-      <div class="path-card"><span>BACKUP DIRECTORY</span><code>~/.config/fastfetch/backups</code></div>
-      <h2>Suggested workflow</h2>
-      <div class="timeline">
-        <div><i>1</i><b>Back up</b><span>Capture a known-good state before a major redesign.</span></div>
-        <div><i>2</i><b>Experiment</b><span>Change modules, colors, logos or formatting.</span></div>
-        <div><i>3</i><b>Preview</b><span>Run <code>fastfetch</code> and inspect the result.</span></div>
-        <div><i>4</i><b>Restore</b><span>If the result is cursed, restore the previous configuration.</span></div>
-      </div>
-    </section>
+      <h2>Repository</h2>
+      <p>The source code, scripts and current implementation are available in the <a href="https://github.com/AaronYTDev/fastfetch-config" target="_blank" rel="noopener">GitHub repository</a>.</p>
 
-    <section class="page" data-route="troubleshooting">
-      <div class="page-title"><span class="eyebrow"><span></span> FIXES</span><h1>Troubleshooting</h1><p>When the terminal decides that today is the day it stops cooperating.</p></div>
-      <details open><summary>“fastfetch-config: command not found”</summary><p>The installer places the command under <code>~/.local/bin</code>. Make sure that directory is on your PATH, then restart your shell or reload its configuration.</p><div class="code"><button class="copy">copy</button><pre>echo "$PATH" | tr ':' '\n' | grep -F "$HOME/.local/bin"</pre></div></details>
-      <details><summary>Missing jq / chafa / ImageMagick</summary><p>The installer checks for these dependencies. On unsupported distributions, install them yourself and run the tool again.</p></details>
-      <details><summary>macOS is broken</summary><p>That is not a shocking plot twist. The project explicitly labels macOS support as very experimental. Linux, particularly Arch-based systems, is the primary supported environment.</p></details>
-      <details><summary>Fastfetch itself works, but the config looks wrong</summary><p>Inspect <code>~/.config/fastfetch/config.jsonc</code>. Check module order, JSONC syntax, logo paths and formatting options. The Fastfetch JSON schema is useful in an editor.</p></details>
-      <details><summary>Custom logo does not render</summary><p>Verify the file exists and is readable. Also check that the relevant image/terminal rendering tools are installed when your chosen logo mode needs them.</p></details>
-      <div class="callout danger"><b>Important:</b> a Fastfetch configuration can contain a command module capable of running shell commands. Treat untrusted configs like executable content and review them before use.</div>
-    </section>
+      <h2>Installer version</h2>
+      <p>The installer currently identifies itself as version <code>V1.6.8</code>.</p>
 
-    <section class="page" data-route="reference">
-      <div class="page-title"><span class="eyebrow"><span></span> CHEAT SHEET</span><h1>Command reference</h1><p>A compact reference for the commands you are most likely to reach for.</p></div>
-      <div class="reference-list">
-        <div><code>fastfetch</code><span>Run Fastfetch with the default configuration.</span></div>
-        <div><code>fastfetch-config</code><span>Launch this project's configuration TUI.</span></div>
-        <div><code>fastfetch --gen-config</code><span>Create a minimal Fastfetch configuration.</span></div>
-        <div><code>fastfetch --gen-config-full</code><span>Create a more complete configuration.</span></div>
-        <div><code>fastfetch --help</code><span>Show general help.</span></div>
-        <div><code>fastfetch --list-logos</code><span>List logo names.</span></div>
-        <div><code>fastfetch --print-logos</code><span>Print logo information.</span></div>
-        <div><code>fastfetch -c FILE</code><span>Run using a specific configuration file.</span></div>
-        <div><code>fastfetch -s MODULES --format json</code><span>Inspect module data as JSON.</span></div>
-      </div>
-      <div class="callout tip"><b>Remember:</b> Fastfetch's own <code>--help</code> output is the authoritative source for flags and module-specific options. This wiki is a friendly layer on top, not a replacement for the program's own documentation.</div>
-    </section>
-
-    <section class="page" data-route="faq">
-      <div class="page-title"><span class="eyebrow"><span></span> QUESTIONS</span><h1>FAQ</h1><p>The questions people eventually ask after poking the terminal with a stick.</p></div>
-      <details open><summary>Is fastfetch-config Fastfetch?</summary><p>No. Fastfetch is the system-information program. fastfetch-config is a separate TUI project that helps manage a Fastfetch configuration.</p></details>
-      <details><summary>Where is the config?</summary><p>By default, the project uses <code>$XDG_CONFIG_HOME/fastfetch</code>, falling back to <code>~/.config/fastfetch</code>.</p></details>
-      <details><summary>Does it support every OS?</summary><p>No guarantee. The repository says it works best on Arch Linux and Arch-based distributions. macOS support is explicitly described as very experimental.</p></details>
-      <details><summary>Who made it?</summary><p>The repository credits aaronYTDev and Madrinth.</p></details>
-      <details><summary>Is this official Fastfetch documentation?</summary><p>No. This is documentation for the fastfetch-config project. It uses Fastfetch's public documentation for concepts such as JSONC, modules and logos, while project-specific details come from the fastfetch-config repository.</p></details>
+      <h2>Development status</h2>
+      <p>The project is developed for fun and does not promise that every feature will work perfectly or that releases will follow a fixed schedule.</p>
     </section>
   </main>
 </div>
 
-<div class="search-overlay" id="searchOverlay" aria-hidden="true">
+<div class="search-overlay" id="searchOverlay">
   <div class="search-box">
-    <div class="search-top"><input id="searchInput" placeholder="Search documentation..." autocomplete="off"><button id="closeSearch">Esc</button></div>
-    <div id="searchResults"></div>
+    <input class="search-input" id="searchInput" placeholder="Search the wiki…" autocomplete="off">
+    <div class="results" id="results"></div>
   </div>
 </div>
 
 <script>
-(() => {
-  "use strict";
+const pages=[...document.querySelectorAll(".page")];
+const buttons=[...document.querySelectorAll("[data-page]")];
+const sidebar=document.getElementById("sidebar");
+const menu=document.getElementById("menu");
+const overlay=document.getElementById("searchOverlay");
+const searchInput=document.getElementById("searchInput");
+const results=document.getElementById("results");
+const searchBtn=document.getElementById("searchBtn");
 
-  const body = document.body;
-  const pages = [...document.querySelectorAll(".page")];
-  const links = [...document.querySelectorAll("[data-page]")];
-  const overlay = document.querySelector(".search-overlay");
-  const input = document.querySelector(".search-input");
-  const results = document.querySelector(".search-results");
+function showPage(id){
+  if(!document.getElementById(id)) id="home";
+  pages.forEach(p=>p.classList.toggle("active",p.id===id));
+  buttons.forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+  history.replaceState(null,"","#"+id);
+  sidebar.classList.remove("open");
+  window.scrollTo(0,0);
+}
+function route(){
+  showPage(location.hash.slice(1)||"home");
+}
+buttons.forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+window.addEventListener("hashchange",route);
+route();
 
-  function pageTitle(page) {
-    return page.querySelector("h1, h2")?.textContent?.trim() || page.id;
-  }
+menu.addEventListener("click",()=>sidebar.classList.toggle("open"));
+function openSearch(){
+  overlay.classList.add("open");
+  searchInput.value="";
+  results.innerHTML="";
+  searchInput.focus();
+}
+function closeSearch(){overlay.classList.remove("open")}
+searchBtn.addEventListener("click",openSearch);
+overlay.addEventListener("click",e=>{if(e.target===overlay)closeSearch});
+document.addEventListener("keydown",e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}
+  if(e.key==="Escape")closeSearch();
+});
 
-  function showPage(id, changeHash = true) {
-    const page = document.getElementById(id) || document.getElementById("home");
-    if (!page) return;
+const index=pages.map(p=>({
+  id:p.id,
+  title:p.querySelector("h1").textContent,
+  text:p.textContent.replace(/\s+/g," ").trim()
+}));
+function escapeHTML(s){
+  return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+searchInput.addEventListener("input",()=>{
+  const q=searchInput.value.trim().toLowerCase();
+  if(!q){results.innerHTML="";return}
+  const matches=index.filter(x=>(x.title+" "+x.text).toLowerCase().includes(q)).slice(0,8);
+  results.innerHTML=matches.length
+    ? matches.map(x=>`<a class="result" href="#${x.id}"><strong>${escapeHTML(x.title)}</strong><small>${escapeHTML(x.text.slice(0,120))}…</small></a>`).join("")
+    : '<div class="result">No matching pages.</div>';
+});
+results.addEventListener("click",e=>{
+  const link=e.target.closest("a");
+  if(link) closeSearch();
+});
 
-    pages.forEach(p => p.classList.toggle("active", p === page));
-    links.forEach(link => link.classList.toggle("active", link.dataset.page === page.id));
-
-    if (changeHash) history.replaceState(null, "", "#" + page.id);
-
-    body.classList.remove("nav-open");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  links.forEach(link => {
-    link.addEventListener("click", event => {
-      event.preventDefault();
-      showPage(link.dataset.page);
-    });
-  });
-
-  document.querySelector("[data-menu]")?.addEventListener("click", () => {
-    body.classList.toggle("nav-open");
-  });
-
-  function escapeHTML(value) {
-    return value.replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[char]));
-  }
-
-  function search(query = "") {
-    if (!results) return;
-
-    const q = query.trim().toLowerCase();
-
-    const found = pages.filter(page => {
-      const text = (pageTitle(page) + " " + page.textContent).toLowerCase();
-      return !q || text.includes(q);
-    }).slice(0, 12);
-
-    results.innerHTML = found.length
-      ? found.map(page => {
-          const title = pageTitle(page);
-          const description = page.querySelector(".lead, p")?.textContent?.trim() || "";
-          return `<a class="search-result" href="#${page.id}" data-result="${page.id}">
-            <strong>${escapeHTML(title)}</strong>
-            ${escapeHTML(description.slice(0, 130))}
-          </a>`;
-        }).join("")
-      : `<div class="search-result">NO MATCH. THE TERMINAL HAS JUDGED YOU.</div>`;
-
-    results.querySelectorAll("[data-result]").forEach(result => {
-      result.addEventListener("click", event => {
-        event.preventDefault();
-        closeSearch();
-        showPage(result.dataset.result);
-      });
-    });
-  }
-
-  function openSearch() {
-    overlay?.classList.add("open");
-    if (input) {
-      input.value = "";
-      input.focus();
-    }
-    search("");
-  }
-
-  function closeSearch() {
-    overlay?.classList.remove("open");
-  }
-
-  document.querySelector("[data-search]")?.addEventListener("click", openSearch);
-  overlay?.addEventListener("click", event => {
-    if (event.target === overlay) closeSearch();
-  });
-  input?.addEventListener("input", event => search(event.target.value));
-
-  document.querySelectorAll(".copy-btn").forEach(button => {
-    button.addEventListener("click", async () => {
-      const code = button.closest(".code-wrap")?.querySelector("pre")?.innerText || "";
-      const old = button.textContent;
-
-      try {
-        await navigator.clipboard.writeText(code);
-        button.textContent = "COPIED";
-      } catch {
-        button.textContent = "FAILED";
-      }
-
-      setTimeout(() => {
-        button.textContent = old;
-      }, 1000);
-    });
-  });
-
-  document.querySelector("[data-theme]")?.addEventListener("click", () => {
-    document.documentElement.classList.toggle("alt");
-  });
-
-  document.addEventListener("keydown", event => {
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-      event.preventDefault();
-      openSearch();
-    }
-
-    if (event.key === "Escape") {
-      closeSearch();
-      body.classList.remove("nav-open");
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click",async()=>{
+    const text=btn.parentElement.querySelector("code").textContent;
+    try{
+      await navigator.clipboard.writeText(text);
+      const old=btn.textContent;
+      btn.textContent="Copied";
+      setTimeout(()=>btn.textContent=old,1200);
+    }catch{
+      btn.textContent="Copy failed";
+      setTimeout(()=>btn.textContent="Copy",1200);
     }
   });
+});
+/* Tiny interaction feedback, intentionally kept subtle. */
+buttons.forEach(b=>{
+  b.addEventListener("click",()=>{
+    b.animate(
+      [{transform:"translateX(2px)"},{transform:"translateX(0)"}],
+      {duration:140,easing:"ease-out"}
+    );
+  });
+});
 
-  const requested = location.hash.slice(1);
-  showPage(document.getElementById(requested) ? requested : "home", false);
-})();
 </script>
-
 </body>
 </html>
